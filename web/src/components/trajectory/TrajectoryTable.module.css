@@ -1,0 +1,72 @@
+/*
+ * 账本表格（虚拟行）。
+ *
+ * `.spacer` 撑出总高度让滚动条长度正确，`.window` 绝对定位在上面对齐到
+ * 首个可见行——这是固定行高虚拟滚动的标准做法。
+ */
+
+.table {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  font-family: var(--ag-font-ui);
+}
+
+.head {
+  position: sticky;
+  top: 0;
+  z-index: var(--ag-z-sticky);
+  display: grid;
+  grid-template-columns: 96px 74px 132px minmax(0, 1fr) 72px 64px auto;
+  align-items: center;
+  gap: var(--ag-space-2);
+  height: 28px;
+  padding: 0 var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.right {
+  text-align: right;
+}
+
+.spacer {
+  position: relative;
+}
+
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  will-change: transform;
+}
+
+.inspector {
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-code-bg);
+}
+
+.payload {
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: 1.5;
+  color: var(--ag-alias-text-secondary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.empty {
+  padding: var(--ag-space-6) var(--ag-space-4);
+  text-align: center;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}

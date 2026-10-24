@@ -1,0 +1,26 @@
+[package]
+name = "aigoat"
+version = "1.0.0"
+description = "AI助手应用"
+edition = "2021"
+license = "Apache-2.0"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["sync", "time"] }
+base64 = "0.22"
+rfd = "0.15"
+
+# 不开这个 feature，任何构建（包括 --release）都是 dev 模式：
+# 前端资源不嵌入、运行时连 devUrl，出现"localhost 拒绝连接"。
+# release 必须带 --features custom-protocol（tauri build 会自动开）。
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+strip = true

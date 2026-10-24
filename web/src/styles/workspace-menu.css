@@ -1,0 +1,120 @@
+/*
+ * 顶栏的工作区选择器（WorkspaceMenu）。
+ */
+
+/*
+ * 工作区相关：顶栏选择器、管理对话框、确认框、会话多选。
+ * 单独成文件——这些都是"浮层 + 一次性交互"的样式，和三栏骨架无关。
+ */
+
+/* --------------------------- 顶栏工作区选择器 --------------------------- */
+
+.wsmenu {
+  position: relative;
+}
+
+.wsmenu__button {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  height: 26px;
+  max-width: 220px;
+  padding: 0 var(--ag-space-2) 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  border: 1px solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-md);
+  transition: background var(--ag-dur-fast) var(--ag-ease), border-color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.wsmenu__button:hover:not(:disabled) {
+  background: var(--ag-alias-bg-overlay);
+  border-color: var(--ag-alias-border-strong);
+}
+
+/* 没有工作区时按钮本身就是入口，用强调色把它点出来 */
+.wsmenu__button.is-empty {
+  border-color: var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+}
+
+.wsmenu__label {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  flex: none;
+}
+
+.wsmenu__button.is-empty .wsmenu__label {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.wsmenu__name {
+  min-width: 0;
+  font-weight: 600;
+}
+
+.wsmenu__caret {
+  font-size: 10px;
+  color: var(--ag-alias-text-muted);
+  flex: none;
+}
+
+/* 下拉菜单靠左展开：菜单项是左对齐的长文本，靠右展开会顶出视口 */
+.menu--dropdown {
+  top: calc(100% + 4px);
+  left: 0;
+  right: auto;
+  min-width: 260px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.wsmenu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  width: 100%;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  text-align: left;
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-primary);
+  min-width: 0;
+}
+
+.wsmenu__item:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.wsmenu__item.is-active {
+  color: var(--ag-alias-accent);
+}
+
+.wsmenu__tick {
+  width: 12px;
+  flex: none;
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.wsmenu__empty {
+  margin: 0;
+  padding: var(--ag-space-2) var(--ag-space-2) var(--ag-space-1);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  line-height: var(--ag-lh-base);
+}
+
+.wsmenu__sep {
+  height: 1px;
+  margin: var(--ag-space-1) 0;
+  background: var(--ag-alias-border-subtle);
+}
+
+.menu__item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+

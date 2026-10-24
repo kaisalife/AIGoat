@@ -1,0 +1,22 @@
+.welcome {
+  margin: auto;
+  padding: var(--ag-space-6);
+  max-width: 420px;
+  text-align: center;
+  /* 整块居中占位，不参与消息流的滚动 */
+  flex: 1;
+}
+
+.welcome h2 {
+  margin-bottom: var(--ag-space-3);
+  font-size: var(--ag-fs-content-xl);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.welcome p {
+  margin-bottom: var(--ag-space-3);
+  font-size: var(--ag-fs-content-sm);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+}

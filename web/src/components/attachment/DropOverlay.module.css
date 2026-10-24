@@ -1,0 +1,49 @@
+/*
+ * 全屏拖放邀请态。
+ *
+ * 半透明遮罩盖住整个窗口：拖放的目标是"整条消息"，不是某个小控件，
+ * 让整块都亮起来才是对的暗示。
+ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ag-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ag-space-6);
+  background: var(--ag-alias-bg-translucent);
+  backdrop-filter: var(--ag-blur-overlay);
+  /* 不吃掉事件：用户拖歪了松手，底下的界面还要能点 */
+  pointer-events: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-6) var(--ag-space-8);
+  border-radius: var(--ag-radius-card);
+  border: 2px dashed var(--ag-alias-accent);
+  background: var(--ag-alias-bg-surface);
+  box-shadow: var(--ag-shadow-e3);
+}
+
+.glyph {
+  font-size: 34px;
+  color: var(--ag-alias-accent);
+  line-height: 1;
+}
+
+.text {
+  font-size: var(--ag-fs-ui-lg);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.hint {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}

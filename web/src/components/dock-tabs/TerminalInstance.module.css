@@ -1,0 +1,150 @@
+/*
+ * 单个终端实例：头 + 输出 + 输入行。
+ *
+ * 输出区固定高度、自己滚动、贴底（跟消息流同一条规则）——终端是
+ * 「看最新输出的地方」，不是文档。
+ */
+
+.instance {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.exit {
+  flex: none;
+  padding: 0 5px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-overlay);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.exitBad {
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+}
+
+.output {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: var(--ag-space-2) var(--ag-space-3);
+  overflow: auto;
+  background: var(--ag-alias-code-bg);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-content-sm);
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+[data-ended] .output {
+  color: var(--ag-alias-text-muted);
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--ag-alias-accent);
+  animation: term-blink 1s step-end infinite;
+}
+
+@keyframes term-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+}
+
+.error {
+  flex: none;
+  margin: 0;
+  padding: var(--ag-space-1) var(--ag-space-3);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-root);
+}
+
+.prompt {
+  flex: none;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-accent);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ag-alias-accent);
+}
+
+.input:disabled {
+  opacity: 0.55;
+}
+/* 重载挂回：输出不可恢复是**事实告知**，不是错误——用中性色，别用告警色，
+   否则用户会以为终端坏了要处理。 */
+.reattached {
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-neutral-soft);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  white-space: nowrap;
+}

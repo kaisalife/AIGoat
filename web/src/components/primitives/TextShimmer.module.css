@@ -1,0 +1,30 @@
+.shimmer {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    var(--ag-alias-shimmer-base) 0%,
+    var(--ag-alias-shimmer-base) 40%,
+    var(--ag-alias-shimmer-tip) 50%,
+    var(--ag-alias-shimmer-base) 60%,
+    var(--ag-alias-shimmer-base) 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ag-shimmer 1.8s var(--ag-ease) infinite;
+}
+
+@keyframes ag-shimmer {
+  to {
+    background-position: -140% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+    background: none;
+    color: var(--ag-alias-text-muted);
+  }
+}

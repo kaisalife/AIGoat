@@ -1,0 +1,103 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid transparent;
+  white-space: nowrap;
+  /* 层次靠 elevation 阴影替代堆边框（dsh 视觉规范） */
+  transition:
+    background var(--ag-dur-fast) var(--ag-ease),
+    border-color var(--ag-dur-fast) var(--ag-ease),
+    color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.button:not(:disabled):active {
+  transform: translateY(0.5px);
+}
+
+/* ---------- 尺寸 ---------- */
+.md {
+  height: 32px;
+  padding: 0 var(--ag-space-3);
+  font-size: var(--ag-fs-ui-md);
+}
+
+.sm {
+  height: 26px;
+  padding: 0 var(--ag-space-2);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.block {
+  width: 100%;
+}
+
+.iconOnly {
+  padding: 0;
+}
+
+.md.iconOnly {
+  width: 32px;
+}
+
+.sm.iconOnly {
+  width: 26px;
+}
+
+/* 标签固定按内容宽度排布，忙碌时按钮不会左右跳 */
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ---------- 变体 ---------- */
+.primary {
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-text-on-accent);
+  box-shadow: var(--ag-shadow-e1);
+}
+
+.primary:not(:disabled):hover {
+  background: var(--ag-alias-accent-hover);
+}
+
+.secondary {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+  border-color: var(--ag-alias-border);
+  box-shadow: var(--ag-shadow-e1);
+}
+
+.secondary:not(:disabled):hover {
+  background: var(--ag-alias-bg-overlay);
+  border-color: var(--ag-alias-border-strong);
+}
+
+/* ghost 只在 hover 时显形，用于工具条这类密集控件 */
+.ghost {
+  background: transparent;
+  color: var(--ag-alias-text-secondary);
+}
+
+.ghost:not(:disabled):hover {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+}
+
+.danger {
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  border-color: var(--ag-alias-danger-line);
+}
+
+.danger:not(:disabled):hover {
+  background: var(--ag-alias-danger);
+  color: var(--ag-alias-text-on-accent);
+}

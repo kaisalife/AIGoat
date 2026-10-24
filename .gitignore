@@ -1,0 +1,19 @@
+**/target
+node_modules
+
+# 前端构建产物（tauri build 前由 beforeBuildCommand 自动生成）
+/web/dist/
+
+# Python 字节码缓存（tools 下的检查脚本产生）
+__pycache__/
+
+# 打包 staging（package.ps1 收集的 codex.exe 产物），不入仓库
+/src-tauri/bin/
+/src-tauri/installer-hooks.nsh
+
+# 本地私有配置（含端点/环境变量名/工作目录），不提交
+/config/local.json
+/config/*.local.json
+
+Cargo.lock.orig
+*.tmp

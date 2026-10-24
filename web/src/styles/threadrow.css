@@ -1,0 +1,127 @@
+/*
+ * 会话行（ThreadRow）的全局部分。
+ *
+ * 行本身与列表骨架已经搬进 CSS Modules（`ThreadRow.module.css` /
+ * `ThreadList.module.css`）。这里剩下的只有**跨模块共用**的那几个：
+ * 行容器要在置顶区被 flex 布局摆位，而置顶区在另一个模块里——
+ * 拆成两个模块各写一遍 `.threadrow` 的布局规则不如留一份全局。
+ *
+ * 已迁走的：状态点、拖拽把手、搜索框、置顶图标、分组标题、归档折叠。
+ */
+
+.threadrow {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  position: relative;
+  margin-bottom: 1px;
+  border-radius: var(--ag-radius-sm);
+}
+
+.threadrow .threaditem {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  padding: var(--ag-space-1) var(--ag-space-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-sm);
+  text-align: left;
+  min-height: 26px;
+}
+
+.threadrow .threaditem:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.threadrow .threaditem.is-active {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-weight: 600;
+}
+
+.threadrow .threaditem.is-archived {
+  opacity: 0.65;
+}
+
+.threaditem__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.threaditem__meta {
+  display: flex;
+  gap: var(--ag-space-1);
+  flex: none;
+  font-size: 10px;
+  color: var(--ag-alias-text-muted);
+}
+
+.threaditem__model {
+  max-width: 8em;
+}
+
+.threadrow__more {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  opacity: 0;
+  transition: opacity var(--ag-dur-fast) var(--ag-ease);
+}
+
+.threadrow:hover .threadrow__more,
+.threadrow__more.is-open,
+.threadrow__more:focus-visible {
+  opacity: 1;
+}
+
+.threadrow__more:hover {
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-primary);
+}
+
+/* 多选态的勾选框 */
+.threadcheck {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--ag-alias-border-strong);
+  border-radius: 3px;
+  font-size: 9px;
+  line-height: 11px;
+  text-align: center;
+  color: transparent;
+}
+
+.threadcheck.is-on {
+  background: var(--ag-alias-accent);
+  border-color: var(--ag-alias-accent);
+  color: var(--ag-alias-text-on-accent);
+}
+
+/* 就地重命名 */
+.threadrename {
+  margin-bottom: 1px;
+}
+
+.threadrename__input {
+  width: 100%;
+  height: 26px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-accent);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+  outline: none;
+}

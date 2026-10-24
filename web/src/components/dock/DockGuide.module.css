@@ -1,0 +1,57 @@
+/*
+ * 空态引导：右栏一个 tab 都没开时显示。
+ *
+ * 做成可点的清单而不是一句"这里是空的"——右栏默认开着却什么都不显示，
+ * 用户会以为界面坏了。
+ */
+
+.guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-6) var(--ag-space-4);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--ag-fs-ui-lg);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.sub {
+  margin: 0;
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  width: 100%;
+  max-width: 260px;
+  margin-top: var(--ag-space-2);
+}
+
+.item {
+  justify-content: flex-start;
+  gap: var(--ag-space-2);
+}
+
+.glyph {
+  flex: none;
+  width: 1.4em;
+  text-align: center;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  opacity: 0.75;
+}
+
+.note {
+  margin: var(--ag-space-3) 0 0;
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+}

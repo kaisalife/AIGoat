@@ -1,0 +1,38 @@
+/*
+ * 子 Agent 徽章（MinorCards 的 SubAgentBadge）。
+ */
+/* --------------------------- 子 Agent 徽章 --------------------------- */
+
+.subagent {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  width: 100%;
+  padding: var(--ag-space-1) var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  border: 1px dashed var(--ag-alias-border);
+  background: var(--ag-alias-bg-surface);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-secondary);
+  text-align: left;
+  min-width: 0;
+  transition: border-color var(--ag-dur-fast) var(--ag-ease), background var(--ag-dur-fast) var(--ag-ease);
+}
+
+.subagent:hover:not(:disabled) {
+  border-color: var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+}
+
+.subagent:disabled {
+  cursor: default;
+}
+
+.subagent__id {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  min-width: 0;
+  flex: none;
+  max-width: 40%;
+}
+

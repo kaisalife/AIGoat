@@ -1,0 +1,37 @@
+/*
+ * 「+」菜单的挂载点。
+ *
+ * 绝对定位在 composer 的左下角之外——它是个"补充入口"，不该占输入区的宽度。
+ */
+
+.dock {
+  position: absolute;
+  left: var(--ag-space-4);
+  bottom: var(--ag-space-4);
+  z-index: var(--ag-z-dock);
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+}
+
+.trigger {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-lg);
+  line-height: 1;
+  box-shadow: var(--ag-shadow-e1);
+}
+
+.trigger:hover {
+  color: var(--ag-alias-text-primary);
+  border-color: var(--ag-alias-border-strong);
+}
+
+.warn {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-warning);
+}

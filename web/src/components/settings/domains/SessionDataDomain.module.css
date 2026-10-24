@@ -1,0 +1,23 @@
+/*
+ * 会话数据域的「路径 + 打开位置」行。
+ *
+ * 路径是这一域的主体，所以给它留了 320px 再省略号：用户要能看清文件名，
+ * 才能确认打开的是哪个目录。放不下就说明该把面板拉宽，而不是继续截短。
+ */
+
+.row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  min-width: 0;
+}
+
+.row code {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}

@@ -1,0 +1,22 @@
+{
+  "_comment": "复制为 config/local.json 后按需修改。local.json 已被 .gitignore 忽略，不会提交。注意：这里只写环境变量名，不要把 key 本身写进文件。",
+
+  "codexPath": "D:\\Codex\\Codex-cli-rs\\bin\\codex.exe",
+
+  "providerId": "spark",
+  "providerName": "iFlytek MaaS",
+  "baseUrl": "https://maas-api.cn-huabei-1.xf-yun.com/v1",
+  "model": "spark-x2.5-4b",
+
+  "_comment_envKey": "凭证从哪个环境变量读取。启动前 set 该变量即可，key 不落盘。",
+  "envKey": "SPARK_API_KEY",
+
+  "_comment_sandbox": "read-only | workspace-write | danger-full-access",
+  "sandbox": "workspace-write",
+
+  "_comment_approvals": "auto | decline | manual",
+  "approvals": "auto",
+
+  "cwd": "D:\\Godot\\AI-Asserts-helper\\sprite-maker-0.3.2\\sprite-maker-0.3.2\\.trae\\AIGoat",
+  "prompt": "用一句话说明 Rust 是什么，不要调用任何工具。"
+}

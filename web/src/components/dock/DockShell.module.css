@@ -1,0 +1,51 @@
+/*
+ * dock 骨架：tab 条 + 活动面板区。
+ *
+ * 面板 absolute 锚定右缘（01 §2.2 的 track 语义）——dock 只占宽度，
+ * 不参与中栏排版，所以面板将来做全屏展开也不会反过来挤压消息流。
+ */
+
+.dock {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 懒加载面板的占位：chunk 到齐前显示，避免一块空白。 */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+/* tab 标题右侧的摘要（连接数、token 数…） */
+:global(.dockTabBadge) {
+  flex: none;
+  margin-left: auto;
+  padding: 0 5px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}

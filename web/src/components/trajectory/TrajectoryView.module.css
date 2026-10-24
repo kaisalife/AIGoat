@@ -1,0 +1,36 @@
+/*
+ * Trajectory 视图：顶部时序总览 + 工具条 + 账本表格。
+ *
+ * 表格自己滚动（`flex: 1`），顶部两块固定——拖选时间窗时表格不该跟着滚。
+ */
+
+.view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-2) var(--ag-space-4);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.count {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.total {
+  margin-left: var(--ag-space-2);
+  color: var(--ag-alias-text-muted);
+}

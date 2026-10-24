@@ -1,0 +1,122 @@
+/*
+ * 审批卡片。
+ *
+ * 消息流里的审批卡与审批接管（components/approval）**共用**这一张表——
+ * 审批只有一条呈现链路，写两遍迟早分裂成「接管时标危险、消息流里不标」。
+ */
+
+/* ----------------------------- 审批卡片 ----------------------------- */
+
+.approval {
+  border-radius: var(--ag-radius-lg);
+  overflow: hidden;
+}
+
+/* 待处理：实心边框 + 浅底，消息流里唯一「会等你」的元素 */
+.approval--pending {
+  border: 1px solid var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+  padding: var(--ag-space-3);
+}
+
+.approval--pending .approval__head {
+  padding: 0 0 var(--ag-space-2);
+  margin: 0;
+}
+
+.approval__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin-bottom: var(--ag-space-2);
+}
+
+.approval__glyph {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-text-inverse);
+  font-size: 11px;
+  font-weight: 700;
+  flex: none;
+}
+
+.approval__kind {
+  font-weight: 600;
+  font-size: var(--ag-fs-ui-md);
+}
+
+.approval__cwd {
+  margin-left: auto;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  min-width: 0;
+}
+
+.approval__cmd {
+  margin: 0 0 var(--ag-space-2);
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-bg-input);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ag-alias-text-primary);
+}
+
+.approval__reason {
+  margin-bottom: var(--ag-space-3);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-secondary);
+  line-height: var(--ag-lh-base);
+}
+
+.approval__actions {
+  display: flex;
+  gap: var(--ag-space-2);
+}
+
+.approval__actions .btn {
+  height: 30px;
+  min-width: 84px;
+}
+
+/* 已处理：收敛成一行灰字，不留在视觉焦点上 */
+.approval--done {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border: 1px solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-surface);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-muted);
+}
+
+.approval--done .approval__glyph {
+  width: 15px;
+  height: 15px;
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-secondary);
+}
+
+.approval__verdict {
+  padding: 0 6px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.approval--done .approval__cmd {
+  margin: 0;
+  padding: 0;
+  background: none;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  min-width: 0;
+}
+

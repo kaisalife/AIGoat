@@ -1,0 +1,158 @@
+﻿/*
+ * 会话流容器。
+ *
+ * 上下两个区域各自滚动：消息流贴底跟随，账本自由翻查。它们的滚动需求相反，
+ * 共用一个容器会两边都别扭。
+ */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/*
+ * 浮标层：包住滚动容器，自身不滚动。
+ *
+ * 绝对定位的浮标（回到底部 / 账本开关）相对**它**定位，而不是相对滚动
+ * 容器——放在滚动容器里的话，滚动偏移会把浮标一起带走，用户往上翻时
+ * 「回到底部」正好移出视野，而那正是唯一要用到它的时候。
+ */
+.streamHost {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.stream {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.inner {
+  max-width: var(--ag-content-max);
+  margin: 0 auto;
+  padding: var(--ag-space-4) var(--ag-space-5) var(--ag-space-6);
+}
+
+.jump {
+  position: absolute;
+  right: var(--ag-space-4);
+  bottom: var(--ag-space-4);
+  z-index: var(--ag-z-sticky);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  height: 28px;
+  padding: 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-translucent);
+  backdrop-filter: var(--ag-blur-overlay);
+  box-shadow: var(--ag-shadow-e2);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.jump:hover {
+  color: var(--ag-alias-text-primary);
+  border-color: var(--ag-alias-border-strong);
+}
+
+/* 账本开关贴在流底部：它是"另一层内容"的入口，不该抢消息流的注意力 */
+.ledgerToggle {
+  position: absolute;
+  left: var(--ag-space-4);
+  bottom: var(--ag-space-3);
+  z-index: var(--ag-z-sticky);
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.ledgerToggle:hover {
+  color: var(--ag-alias-accent);
+}
+
+/* ---------------------------------------------- 账本 */
+
+.ledger {
+  flex: none;
+  height: 45%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-surface);
+}
+
+.ledgerBar {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-2) var(--ag-space-4);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.ledgerCount {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledgerTotal {
+  margin-left: var(--ag-space-2);
+  color: var(--ag-alias-text-muted);
+}
+
+/* ---------------------------------------------- 空态 */
+
+.empty {
+  margin: 12vh auto 0;
+  padding: 0 var(--ag-space-4);
+  max-width: 420px;
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0 0 var(--ag-space-2);
+  font-size: var(--ag-fs-content-lg);
+  font-weight: 600;
+}
+
+.emptyBody {
+  margin: 0;
+  color: var(--ag-alias-text-secondary);
+  line-height: var(--ag-lh-base);
+}
+
+.emptyBody code {
+  padding: 1px 5px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+}
+
+.emptyHints {
+  margin: var(--ag-space-5) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-muted);
+}
+/* 第 4 档（原始事件）：账本从"可展开的第二层"变成消息流的一部分，
+   所以要自己带滚动容器，且高度按比例分而不是固定 45%。 */
+.ledgerInline {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  border-top: 1px solid var(--ag-alias-border);
+}

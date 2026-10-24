@@ -1,0 +1,99 @@
+/*
+ * 触发弹层。
+ *
+ * 贴在输入框上方（不是全屏浮层）：它服务于"我现在正在打字"这件事，
+ * 遮住整个窗口反而让人失去上下文。
+ */
+
+.popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  z-index: var(--ag-z-popover);
+  max-height: 260px;
+  overflow: auto;
+  margin-bottom: var(--ag-space-1);
+  padding: var(--ag-space-1);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-translucent);
+  backdrop-filter: var(--ag-blur-overlay);
+  box-shadow: var(--ag-shadow-e2);
+}
+
+.section + .section {
+  margin-top: var(--ag-space-1);
+}
+
+/* 分组头 sticky：往下滚时仍知道在看哪一段 */
+.head {
+  position: sticky;
+  top: 0;
+  margin: 0;
+  padding: 2px var(--ag-space-2);
+  background: var(--ag-alias-bg-raised);
+  font-size: var(--ag-fs-ui-xs);
+  font-weight: 600;
+  color: var(--ag-alias-text-muted);
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ag-space-2);
+  width: 100%;
+  min-height: 26px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+  text-align: left;
+}
+
+.item:hover {
+  background: var(--ag-alias-bg-overlay);
+}
+
+/* 键盘高亮与 hover 同一个色：两者都是"当前指向" */
+.active {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+}
+
+.label {
+  flex: none;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+/* 也要跟着 active 变色，否则深色背景上的灰字读不清 */
+.active .hint {
+  color: var(--ag-alias-accent);
+}
+
+.hint {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ag-space-2);
+  margin: 0;
+  padding: var(--ag-space-2);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.dismiss {
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+}

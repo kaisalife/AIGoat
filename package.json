@@ -1,0 +1,11 @@
+{
+  "name": "aigoat",
+  "private": true,
+  "description": "AIGoat 构建辅助：tauri CLI 与 API 包本地化，避免向上解析到外层项目的旧版本",
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.4"
+  }
+}

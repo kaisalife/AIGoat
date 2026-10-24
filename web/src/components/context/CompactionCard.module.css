@@ -1,0 +1,31 @@
+.wrap {
+  /* 压缩是不可逆的信息损失，卡要比普通条目显眼一点 */
+  border-left: 2px solid var(--ag-alias-warning);
+  padding-left: var(--ag-space-2);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-secondary);
+}
+
+.lead {
+  margin: 0;
+  line-height: var(--ag-lh-base);
+}
+
+.link {
+  align-self: flex-start;
+  padding: 0;
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  color: var(--ag-alias-accent-hover);
+}

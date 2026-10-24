@@ -1,0 +1,101 @@
+/*
+ * 顶栏。全局类名（不是 Module）：顶栏结构在 TopBar / TopBarActions 两处，
+ * 拆成两份 CSS Module 会让同一个 className 在两个模块里各写一遍。
+ */
+
+/* ------------------------------ 顶栏 ------------------------------ */
+
+.topbar {
+  /* 用 flex 而不是 grid：这里有 4 个子元素（折叠按钮 / 品牌 / 中间 / 右侧），
+     grid 列数一旦和子元素数对不上就会把末尾挤到下一行并裁掉。 */
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  padding: 0 var(--ag-space-3);
+  background: var(--ag-alias-bg-surface);
+  border-bottom: 1px solid var(--ag-alias-border);
+}
+
+.topbar__toggle {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ag-radius-md);
+  color: var(--ag-alias-text-muted);
+  transition: background var(--ag-dur-fast) var(--ag-ease), color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.topbar__toggle:hover {
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-primary);
+}
+
+.topbar__toggle.is-on {
+  color: var(--ag-alias-accent);
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  min-width: 0;
+  /* 品牌区可压缩但有下限：路径再长也不该把中间组挤没。 */
+  flex: 1 1 180px;
+}
+
+.topbar__logo {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-text-inverse);
+  font-weight: 700;
+  font-size: var(--ag-fs-ui-sm);
+  flex: none;
+}
+
+.topbar__id {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.topbar__name {
+  font-weight: 600;
+  font-size: var(--ag-fs-ui-md);
+}
+
+.topbar__path {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  font-family: var(--ag-font-mono);
+}
+
+.topbar__center {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  /* 中间组自己居中，但左右各留一个等宽占位，避免偏心。 */
+  margin-inline: auto;
+  min-width: 0;
+  flex: none;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  margin-left: auto;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+

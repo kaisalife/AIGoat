@@ -1,0 +1,56 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-code-bg);
+  overflow: hidden;
+}
+
+.header {
+  flex: none;
+  padding: var(--ag-space-1) var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+/* 固定高度 + 贴底：终端是「看最新的地方」，不是文档 */
+.body {
+  flex: 1;
+  margin: 0;
+  padding: var(--ag-space-2) var(--ag-space-3);
+  height: 240px;
+  overflow: auto;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-content-sm);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+  /* 输出是追加的：平滑滚动会让长文本拖出一条永远追不上的尾迹 */
+  scroll-behavior: auto;
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--ag-alias-accent);
+  animation: ag-blink 1s step-end infinite;
+}
+
+@keyframes ag-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+}

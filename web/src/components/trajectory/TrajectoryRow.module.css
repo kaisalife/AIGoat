@@ -1,0 +1,82 @@
+/*
+ * 账本表格的行。
+ *
+ * 固定行高 32px —— 虚拟滚动（`TrajectoryTable`）按行高等比推算可见范围，
+ * 行高一旦随内容变，整个窗口化就失效了。所以摘要必须单行截断，不能换行。
+ */
+
+.row {
+  display: grid;
+  grid-template-columns: 96px 74px 132px minmax(0, 1fr) 72px 64px auto;
+  align-items: center;
+  gap: var(--ag-space-2);
+  height: 32px;
+  padding: 0 var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  cursor: pointer;
+}
+
+.row:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.expanded {
+  background: var(--ag-alias-accent-soft);
+}
+
+.clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--ag-alias-text-muted);
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  min-width: 0;
+}
+
+.sourceText {
+  color: var(--ag-alias-text-secondary);
+}
+
+.kind {
+  font-family: var(--ag-font-mono);
+  font-size: 10px;
+  color: var(--ag-alias-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ag-alias-text-primary);
+}
+
+.gap {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ag-alias-text-muted);
+}
+
+.turn {
+  font-family: var(--ag-font-mono);
+  font-size: 10px;
+  color: var(--ag-alias-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* "回补行"标记：这类行的时刻是拉取时刻，不是发生时刻 */
+.origin {
+  padding: 0 4px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+  font-size: 10px;
+}

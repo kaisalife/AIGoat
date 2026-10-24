@@ -1,0 +1,53 @@
+/*
+ * 模型座位。
+ *
+ * 贴在 composer 左下角（输入区的"角"）：它是发消息**之前**要确认的信息，
+ * 放到顶栏就要抬头去找。
+ */
+
+.seat {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  height: 24px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+  font-size: var(--ag-fs-ui-xs);
+  max-width: 220px;
+}
+
+.seat:hover {
+  border-color: var(--ag-alias-accent-line);
+  color: var(--ag-alias-accent);
+}
+
+/* 没配模型：不能和正常状态长得一样，否则用户以为点它能选 */
+.seatEmpty {
+  border-color: var(--ag-alias-warning);
+  color: var(--ag-alias-warning);
+}
+
+.label {
+  flex: none;
+  color: var(--ag-alias-text-muted);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ag-alias-text-primary);
+}
+
+/* 回合运行中：切换只对下一轮生效，说出来才不会以为切换失败 */
+.pending {
+  flex: none;
+  padding: 0 5px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-warning-soft);
+  color: var(--ag-alias-warning);
+}

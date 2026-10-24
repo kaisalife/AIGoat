@@ -1,0 +1,93 @@
+﻿/*
+ * 血缘面包屑 + 后代树。
+ *
+ * 浮层用 `position: absolute` 挂在胶囊下面而不是居中弹窗：它回答的是
+ * 「我刚才派出去的那几个还在跑吗」，一个贴着上下文的小浮层就够了，
+ * 居中弹窗会打断正在读主会话的视线。
+ */
+
+.wrap {
+  position: relative;
+  flex: none;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  height: 24px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.pill:hover {
+  border-color: var(--ag-alias-accent-line);
+  color: var(--ag-alias-accent);
+}
+
+.pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: var(--ag-z-popover);
+  min-width: 260px;
+  max-width: 380px;
+  max-height: 320px;
+  overflow: auto;
+  padding: var(--ag-space-1);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-translucent);
+  backdrop-filter: var(--ag-blur-overlay);
+  box-shadow: var(--ag-shadow-e2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  min-height: 24px;
+  padding-right: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+}
+
+.row:hover {
+  background: var(--ag-alias-bg-overlay);
+}
+
+.caret {
+  flex: none;
+  width: 14px;
+  color: var(--ag-alias-text-muted);
+  font-size: 9px;
+}
+
+.caretSpacer {
+  flex: none;
+  width: 14px;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  flex: 1;
+  min-width: 0;
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-xs);
+  text-align: left;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.activity {
+  flex: none;
+  color: var(--ag-alias-text-muted);
+  font-size: 10px;
+}

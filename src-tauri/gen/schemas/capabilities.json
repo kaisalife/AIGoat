@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"AIGoat 主窗口默认能力：事件监听、基础窗口行为与自绘窗口条的控制权","local":true,"windows":["main"],"permissions":["core:default","core:window:allow-minimize","core:window:allow-toggle-maximize","core:window:allow-close","core:window:allow-is-maximized","core:window:allow-start-dragging"]}}

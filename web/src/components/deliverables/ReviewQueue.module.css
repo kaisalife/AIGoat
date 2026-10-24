@@ -1,0 +1,154 @@
+/*
+ * 待复核队列。
+ *
+ * 只读：裁决出口（thread/approveGuardianDeniedAction）已核实但未接入，
+ * 在那之前给"全部批准"这种按钮是危险的——点了会让人以为批过了。
+ */
+
+.pane {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--ag-space-3);
+}
+
+.group + .group {
+  margin-top: var(--ag-space-4);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin: 0 0 var(--ag-space-2);
+  font-size: var(--ag-fs-ui-sm);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.item {
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-warning-line);
+  background: var(--ag-alias-bg-raised);
+}
+
+.item + .item {
+  margin-top: var(--ag-space-2);
+}
+
+.itemHead {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+}
+
+.risk {
+  font-size: var(--ag-fs-ui-xs);
+  font-weight: 600;
+  color: var(--ag-alias-warning);
+}
+
+.rationale {
+  margin: var(--ag-space-2) 0 0;
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-secondary);
+}
+
+.detail {
+  margin-top: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.detail summary {
+  cursor: pointer;
+}
+
+.payload {
+  margin: var(--ag-space-1) 0 0;
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-code-bg);
+  font-family: var(--ag-font-mono);
+  font-size: 10px;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.empty {
+  padding: var(--ag-space-6) var(--ag-space-3);
+  text-align: center;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+}
+
+.note {
+  margin: 0;
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+}
+
+.note code {
+  font-family: var(--ag-font-mono);
+  padding: 1px 4px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+}
+/* ---------------------------------------------- 裁决 */
+
+/* 就地弹层而不是 Modal：裁决对象就在页面里，跑到屏幕中央会让人
+   失去"我正在裁决哪一条"的上下文。 */
+.modal {
+  margin-top: var(--ag-space-3);
+  padding: var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border-strong);
+  background: var(--ag-alias-bg-raised);
+}
+
+.modalTitle {
+  margin: 0 0 var(--ag-space-2);
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.modalBody {
+  margin: 0 0 var(--ag-space-2);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-secondary);
+}
+
+.reason {
+  width: 100%;
+  min-height: 64px;
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+  resize: vertical;
+}
+
+.reason:focus {
+  outline: none;
+  border-color: var(--ag-alias-accent);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ag-space-2);
+  margin-top: var(--ag-space-2);
+}

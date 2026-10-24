@@ -1,0 +1,59 @@
+/*
+ * 自绘窗口条（decorations: false 之后窗口的"标题栏"）。
+ *
+ * 职责分三块：`data-tauri-drag-region` 承担拖动与双击最大化（Tauri 注入
+ * 脚本处理），右侧三个按钮经 Window API 收缩/还原/关闭，其余只是皮肤。
+ * 高度同步进 `--ag-frame-top-clearance`，浮层用它把自己从窗口条下面避开。
+ */
+
+.bar {
+  display: flex;
+  align-items: stretch;
+  flex: none;
+  height: 32px;
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-root);
+  /* 拖动窗口时选中条里的文字会闪，直接禁掉 */
+  user-select: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--ag-space-3);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  border: none;
+  background: none;
+  color: var(--ag-alias-text-secondary);
+  cursor: default;
+}
+
+.btn:hover {
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-primary);
+}
+
+.btn:focus-visible {
+  outline: var(--ag-hairline) solid var(--ag-alias-accent);
+  outline-offset: -1px;
+}
+
+/* 关闭按钮悬停红底：Windows 的惯例，用户靠颜色区分"关窗口"和"缩放" */
+.close:hover {
+  background: var(--ag-alias-danger);
+  color: var(--ag-alias-text-primary);
+}

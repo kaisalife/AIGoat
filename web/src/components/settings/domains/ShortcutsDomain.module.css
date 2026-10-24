@@ -1,0 +1,22 @@
+/*
+ * 快捷键域的按键渲染。
+ *
+ * 修饰键（Ctrl/Shift）与主键分成两枚 `kbd`：合成一枚的话用户看不出
+ * 哪部分要按住。「+」交给 CSS 伪元素画，不占 DOM，也不参与读屏。
+ */
+
+.keys {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.keys kbd {
+  padding: 1px 6px;
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  border-bottom-width: 2px;
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+  font-family: var(--ag-font-ui);
+  font-size: var(--ag-fs-ui-xs);
+}

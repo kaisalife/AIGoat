@@ -1,0 +1,93 @@
+/*
+ * 文件树 tab。从 Explorer 迁入——内容一样，只是住进了 dock 面板。
+ */
+
+.files {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  cursor: pointer;
+}
+
+.tree {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--ag-space-1) 0 var(--ag-space-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  width: 100%;
+  min-height: 24px;
+  padding-right: var(--ag-space-2);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-sm);
+  text-align: left;
+}
+
+.row:hover {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+}
+
+.rowDir {
+  color: var(--ag-alias-text-primary);
+}
+
+.rowActive {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+}
+
+.caret {
+  flex: none;
+  width: 1em;
+  text-align: center;
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+.caretOpen {
+  opacity: 1;
+}
+
+.caretSpacer {
+  visibility: hidden;
+}
+
+.empty {
+  padding: var(--ag-space-4);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.error {
+  padding: var(--ag-space-2) var(--ag-space-3);
+  margin: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-xs);
+}

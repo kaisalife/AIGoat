@@ -1,0 +1,80 @@
+/*
+ * 管理工作区对话框的列表 + 会话多选批量删除条。
+ *
+ * 两者都是「一组行 + 行内操作」的形态，共用同一套行高与悬停反馈。
+ */
+
+/* ------------------------------ 管理工作区 ------------------------------ */
+
+.wsdialog__empty {
+  margin: 0;
+  padding: var(--ag-space-3) 0;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+}
+
+.wslist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+}
+
+.wslist__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border: 1px solid var(--ag-alias-border-subtle);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-bg-surface);
+}
+
+.wslist__item.is-active {
+  border-color: var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+}
+
+.wslist__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wslist__name {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+}
+
+/* threads-panels.css 里的 .badge 带 margin-left:auto，在这里要压掉 */
+.wslist__name .badge {
+  margin-left: 0;
+}
+
+.wslist__path {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.wslist__ops {
+  display: flex;
+  gap: var(--ag-space-1);
+  flex: none;
+}
+
+/* ------------------------- 会话多选：勾选态 ------------------------- */
+
+.threaditem.is-checked {
+  background: var(--ag-alias-accent-soft);
+  border-left-color: var(--ag-alias-accent);
+}
+

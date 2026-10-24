@@ -1,0 +1,92 @@
+# ============================================================
+# 纯自主配置版 Codex（无 ChatGPT / Codex 登录）
+#
+# 放到 <CODEX_HOME>/config.toml，默认位置：
+#   Windows  %USERPROFILE%\.codex\config.toml
+#   Linux/mac  ~/.codex/config.toml
+#
+# 关键点：requires_openai_auth = false
+#   该项为 false 时 Codex 会跳过登录引导、不读取 auth.json，
+#   鉴权只来自本文件里 provider 的 env_key / bearer token。
+#   不写这项时，默认值也是 false，但显式写出以防歧义。
+# ============================================================
+
+# —— 你自己的模型 id ——
+model = "your-model-id"
+
+# —— provider id，必须与下方 [model_providers.xxx] 的 xxx 一致 ——
+# 注意：openai / amazon-bedrock / amazon-bedrock-runtime / ollama / lmstudio
+# 是 Codex 保留字，用作 id 会被直接拒绝，所以这里必须换成自定义 id。
+model_provider = "myapi"
+
+# —— 沙箱与审批 ——
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+# 可选：推理强度与输出详略
+# model_reasoning_effort = "medium"   # none|minimal|low|medium|high|xhigh|max
+# model_verbosity = "medium"          # low|medium|high
+
+# ============================================================
+# Provider 定义
+# ============================================================
+[model_providers.myapi]
+# 显示名，不能为空
+name = "My API"
+
+# 必填。留空的话 Codex 会回落到 ChatGPT / OpenAI 官方端点，
+# 那样就不是"自主配置"了。
+base_url = "https://api.example.com/v1"
+
+# 只能是 "responses"。Codex 已删除 chat completions 支持，
+# 写 wire_api = "chat" 会直接反序列化失败。
+wire_api = "responses"
+
+# 显式关闭 OpenAI 登录
+requires_openai_auth = false
+
+# 凭证方式（四选一，Codex 不允许组合使用）
+# 方式 1：从环境变量读（推荐，key 不落盘）
+env_key = "MYAPI_API_KEY"
+env_key_instructions = "先 export MYAPI_API_KEY=sk-...，再启动宿主"
+
+# 方式 2：直接写 token（程序化注入时用）
+# experimental_bearer_token = "sk-..."
+
+# 方式 3：本地网关，不需要凭证。把上面 env_key 注释掉即可。
+
+# 方式 4：外部命令取 token（定时刷新）
+# [model_providers.myapi.auth]
+# command = "/usr/local/bin/myapi-token"
+# args = ["--raw"]
+# timeout_ms = 5000            # 默认 5000
+# refresh_interval_ms = 300000 # 默认 300000，0 表示不主动刷新
+
+# 可选：附加查询参数 / 请求头
+# query_params = { api-version = "2025-04-01-preview" }
+# http_headers = { "X-Tenant" = "acme" }
+# env_http_headers = { "X-Trace" = "TRACE_ID" }
+
+# 可选：重试与超时（不写则用默认 4 / 5 / 300000ms）
+# request_max_retries = 4
+# stream_max_retries = 5
+# stream_idle_timeout_ms = 300000
+
+# 可选：供应商自带 web search 端点时才开
+# supports_standalone_web_search = false
+
+# ============================================================
+# 沙箱可写目录（workspace-write 之外额外放行）
+# ============================================================
+# [sandbox_workspace_write]
+# writable_roots = ["D:/projects/extra"]
+# network_access = false
+
+# ============================================================
+# 绝对不要写下面这些键，否则会重新引入登录流程
+#   forced_login_method              限制登录方式，会让进程直接退出
+#   forced_chatgpt_workspace_id      ChatGPT 工作区路由
+#   chatgpt_base_url / openai_base_url  指向官方端点
+# 并且环境里不要留 OPENAI_API_KEY / CODEX_API_KEY / CODEX_ACCESS_TOKEN，
+# 宿主启动 app-server 时已主动清除这三个变量。
+# ============================================================

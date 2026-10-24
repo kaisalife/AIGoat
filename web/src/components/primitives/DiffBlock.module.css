@@ -1,0 +1,85 @@
+.body {
+  margin: 0;
+  padding: var(--ag-space-2) 0;
+  overflow: auto;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-content-sm);
+  line-height: 1.6;
+  background: var(--ag-alias-code-bg);
+  user-select: text;
+}
+
+.line {
+  display: block;
+  padding: 0 var(--ag-space-3);
+  white-space: pre;
+}
+
+/* 左侧色条 + 极浅底：整行实色在几十行以上就成了一堵墙 */
+.add {
+  background: var(--ag-alias-diff-add-soft);
+  box-shadow: inset 2px 0 0 var(--ag-alias-diff-add);
+}
+
+.del {
+  background: var(--ag-alias-diff-del-soft);
+  box-shadow: inset 2px 0 0 var(--ag-alias-diff-del);
+}
+
+.ctx {
+  color: var(--ag-alias-text-secondary);
+}
+
+.hunk {
+  color: var(--ag-alias-info);
+  background: var(--ag-alias-info-soft);
+  user-select: none;
+}
+
+.meta {
+  color: var(--ag-alias-text-muted);
+  user-select: none;
+}
+
+.no {
+  display: inline-block;
+  width: 3.5em;
+  margin-right: var(--ag-space-2);
+  color: var(--ag-alias-text-muted);
+  text-align: right;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.marker {
+  display: inline-block;
+  width: 1em;
+  margin-right: var(--ag-space-2);
+  user-select: none;
+}
+
+.text {
+  white-space: pre;
+}
+
+.stat {
+  display: inline-flex;
+  gap: var(--ag-space-2);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.statAdd {
+  color: var(--ag-alias-diff-add);
+}
+
+.statDel {
+  color: var(--ag-alias-diff-del);
+}
+
+.empty {
+  padding: var(--ag-space-3);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}

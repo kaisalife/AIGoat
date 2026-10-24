@@ -1,0 +1,88 @@
+/*
+ * 提示与分隔。
+ *
+ * 与 chat.css 拆开是因为它们各有归属：chat.css 是消息流本体，这里是
+ * 「消息流周围的提示语」——不参与滚动、不随回合折叠，被别的板块（设置、
+ * 右栏）复用时也只借这一半。
+ *
+ * 空态与运行指示**不在这里**：会话流空态在
+ * `components/chat/ConversationStream.module.css`，转圈是 `primitives/Spinner`
+ * （CSS Modules）。这里只剩消息流里的 notice / divider。
+ */
+
+/* ---------------------------------------------- 提示与分隔 */
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  font-size: var(--ag-fs-ui-sm);
+  background: var(--ag-alias-bg-surface);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  color: var(--ag-alias-text-muted);
+}
+
+.notice__dot {
+  width: 6px;
+  height: 6px;
+  margin-top: 7px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-text-muted);
+  flex: none;
+}
+
+.notice--warn {
+  background: var(--ag-alias-warning-soft);
+  border-color: transparent;
+  color: var(--ag-alias-warning);
+}
+
+.notice--warn .notice__dot {
+  background: var(--ag-alias-warning);
+}
+
+.notice--danger {
+  background: var(--ag-alias-danger-soft);
+  border-color: transparent;
+  color: var(--ag-alias-danger);
+}
+
+.notice--danger .notice__dot {
+  background: var(--ag-alias-danger);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  padding: var(--ag-space-2) 0;
+}
+
+.divider__line {
+  flex: 1;
+  height: var(--ag-hairline);
+  background: var(--ag-alias-border-subtle);
+}
+
+.divider__label {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.divider--review .divider__label {
+  color: var(--ag-alias-info);
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  border-bottom-width: 2px;
+  background: var(--ag-alias-bg-raised);
+  font-family: var(--ag-font-ui);
+  font-size: 10px;
+  color: var(--ag-alias-text-muted);
+}

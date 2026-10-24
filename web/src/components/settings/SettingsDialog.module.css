@@ -1,0 +1,33 @@
+/*
+ * 设置中心的壳：模态内部分成「域导航 + 域内容」两栏。
+ *
+ * `body` 挂在 Modal 的内容区上，所以它的样式要覆盖 Modal 自带的那圈内边距
+ * （两个都是单类，靠打包顺序取胜：SettingsDialog 的 CSS 排在 Modal 之后）。
+ * 域内容自己滚，导航固定——切域时左侧不该跟着动。
+ */
+
+.modal {
+  padding: 0;
+}
+
+.body {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  /* 盖掉 Modal 内容区的默认内边距：这个面板要贴边 */
+  padding: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--ag-space-4);
+}
+
+@media (max-width: 640px) {
+  .body {
+    flex-direction: column;
+  }
+}

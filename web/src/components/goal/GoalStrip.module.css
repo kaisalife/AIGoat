@@ -1,0 +1,59 @@
+﻿/*
+ * 目标条。
+ *
+ * 贴在输入框正上方、占满宽度：它和输入框是同一件事的两面
+ * （"我要让模型做什么" / "我现在告诉它什么"）。
+ */
+
+.strip {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  max-width: var(--ag-content-max);
+  margin: 0 auto var(--ag-space-2);
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+}
+
+.label {
+  flex: none;
+  font-size: var(--ag-fs-ui-xs);
+  font-weight: 600;
+  color: var(--ag-alias-accent);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-primary);
+}
+
+/* 暂停时整条退成灰：一眼看出"它现在不跑了" */
+[data-paused] {
+  border-color: var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+}
+
+.textPaused {
+  color: var(--ag-alias-text-muted);
+  text-decoration: line-through;
+}
+
+.status {
+  flex: none;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.meta {
+  flex: none;
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ag-alias-text-muted);
+}

@@ -1,0 +1,62 @@
+/*
+ * 工具卡正文区。
+ *
+ * 进度条刻意只有 2px 高：它是"有动静"的信号，不是内容。做成正经进度条会
+ * 让人以为那是个可量化的百分比，而它只是"最近一句话"。
+ *
+ * 类名与 `ToolCards.tsx` 的 `s.progress / s.progressText / s.progressBar` 对齐
+ * （原先是 `mcpProgress*`，对不上 → 进度条一直是裸的、没有底与流动条）。
+ */
+
+.progress {
+  position: relative;
+  margin-bottom: var(--ag-space-2);
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-input);
+  overflow: hidden;
+}
+
+.progressText {
+  display: block;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 底部 2px 的流动条：不确定进度，只表达"还在动" */
+.progressBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ag-alias-accent) 40%,
+    var(--ag-alias-accent) 60%,
+    transparent
+  );
+  background-size: 240% 100%;
+  animation: mcp-slide 1.4s linear infinite;
+}
+
+@keyframes mcp-slide {
+  from {
+    background-position: -140% 0;
+  }
+  to {
+    background-position: 140% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressBar {
+    animation: none;
+    background: var(--ag-alias-accent-line);
+  }
+}

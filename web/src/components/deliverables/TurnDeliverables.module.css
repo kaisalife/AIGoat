@@ -1,0 +1,62 @@
+/*
+ * 回合尾交付物卡。
+ *
+ * 行可点击 → 打开预览。整卡默认展开：这一轮改了什么正是用户最想看的，
+ * 折叠它等于把结论藏起来。
+ */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-radius: var(--ag-radius-sm);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  width: 100%;
+  min-height: 24px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-secondary);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  text-align: left;
+}
+
+.row:hover {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+}
+
+.path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* 文件名比目录更有辨识度，目录压暗一档 */
+  direction: rtl;
+  text-align: left;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.stat {
+  display: inline-flex;
+  gap: var(--ag-space-1);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+.plus {
+  color: var(--ag-alias-success);
+}
+
+.minus {
+  color: var(--ag-alias-danger);
+}

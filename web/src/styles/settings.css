@@ -1,0 +1,130 @@
+﻿/*
+ * 设置域的跨域样式：分节、空态、提示、错误、路径行。
+ *
+ * 模态壳与左导航在 SettingsDialog.module.css / SettingsNav.module.css，
+ * 表单与列表行在 SettingsFields.module.css / SettingsList.module.css，
+ * 各域的小控件在各自的 *.module.css。这里只剩两个以上域共用（或是跨域共用）
+ * 的那几类，所以留成一张全局表——收进模块反而要 import 好几处。
+ */
+
+.settings__loading {
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.settings__errors {
+  border: var(--ag-hairline) solid var(--ag-alias-danger-line);
+  background: var(--ag-alias-danger-soft);
+  border-radius: var(--ag-radius-md);
+  padding: var(--ag-space-3) var(--ag-space-4);
+}
+
+.settings__error {
+  margin: 0 0 var(--ag-space-1);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-danger);
+}
+
+.settings__error:last-child {
+  margin-bottom: 0;
+}
+
+.settings__hint {
+  margin: 0;
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+}
+
+.settings__hint code {
+  font-family: var(--ag-font-mono);
+  color: var(--ag-alias-text-secondary);
+}
+
+.settings__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-3);
+}
+
+.settings__section + .settings__section {
+  margin-top: var(--ag-space-5);
+}
+
+.settings__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ag-space-3);
+}
+
+.settings__section-head h3 {
+  margin: 0;
+  font-size: var(--ag-fs-ui-lg);
+  font-weight: 600;
+}
+
+.settings__empty {
+  margin: 0;
+  padding: var(--ag-space-3) var(--ag-space-4);
+  border: var(--ag-hairline) dashed var(--ag-alias-border);
+  border-radius: var(--ag-radius-md);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+}
+
+/* 模型域的落盘位置：路径 + 说明 + 打开按钮 */
+.settings__path {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.settings__path code {
+  font-family: var(--ag-font-mono);
+  max-width: 340px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings__path-note {
+  flex: 1;
+}
+
+/* 模型域的保存条：跟着内容走，不占满模态底部 */
+.settings__footer--inline {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding-top: var(--ag-space-2);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.settings__footer-note {
+  flex: 1;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+/* 子 Agent 域的注入预览：CodeBlock 自带等宽排版，这里只管折叠壳 */
+.settings__preview {
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-bg-raised);
+}
+
+.settings__preview summary {
+  cursor: pointer;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+}
+
+.settings__preview > * + * {
+  margin-top: var(--ag-space-2);
+}

@@ -1,0 +1,61 @@
+.block {
+  margin: 0;
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-code-bg);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-1) var(--ag-space-2) var(--ag-space-1) var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+}
+
+.title {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.body {
+  margin: 0;
+  padding: var(--ag-space-2) var(--ag-space-3);
+  overflow: auto;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-content-sm);
+  line-height: 20px;
+  user-select: text;
+}
+
+/* 行号列独立一条，行内容跟着缩进对齐 */
+.line {
+  display: block;
+  white-space: pre;
+}
+
+.no {
+  display: inline-block;
+  width: 3em;
+  margin-right: var(--ag-space-3);
+  color: var(--ag-alias-text-muted);
+  text-align: right;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.more {
+  width: 100%;
+  border-radius: 0;
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}

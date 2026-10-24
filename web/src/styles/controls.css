@@ -1,0 +1,87 @@
+/*
+ * 共用控件：按钮、图标、可选文本域。
+ *
+ * 这里是最后一批全局样式——新增控件一律走 components/primitives 的
+ * CSS Modules（02 号文件的规定）。这份只服务尚未迁移的存量组件。
+ */
+
+/* ---------------------------- 共用控件 ---------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ag-space-2);
+  height: 28px;
+  padding: 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  border: 1px solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-md);
+  transition: background var(--ag-dur-fast) var(--ag-ease), border-color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--ag-alias-bg-overlay);
+  border-color: var(--ag-alias-border-strong);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--ag-alias-accent);
+  border-color: var(--ag-alias-accent);
+  color: var(--ag-alias-text-inverse);
+  font-weight: 600;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--ag-alias-accent-hover);
+  border-color: var(--ag-alias-accent-hover);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ag-alias-text-secondary);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+}
+
+.btn--danger {
+  border-color: var(--ag-alias-danger);
+  color: var(--ag-alias-danger);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  height: 22px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  font-size: var(--ag-fs-ui-xs);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-secondary);
+  border: 1px solid var(--ag-alias-border-subtle);
+  white-space: nowrap;
+}
+
+.chip--ok {
+  background: var(--ag-alias-success-soft);
+  color: var(--ag-alias-success);
+  border-color: transparent;
+}
+
+.chip--warn {
+  background: var(--ag-alias-warning-soft);
+  color: var(--ag-alias-warning);
+  border-color: transparent;
+}

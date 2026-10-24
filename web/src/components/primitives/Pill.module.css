@@ -1,0 +1,50 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  height: 20px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--ag-radius-pill);
+  background: currentColor;
+  flex: none;
+}
+
+/* 底色用各语义的 soft 档，文字用 base 档——同一色相，一眼分得清深浅 */
+.neutral {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-secondary);
+}
+
+.accent {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+}
+
+.success {
+  background: var(--ag-alias-success-soft);
+  color: var(--ag-alias-success);
+}
+
+.warning {
+  background: var(--ag-alias-warning-soft);
+  color: var(--ag-alias-warning);
+}
+
+.danger {
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+}
+
+.info {
+  background: var(--ag-alias-info-soft);
+  color: var(--ag-alias-info);
+}

@@ -1,0 +1,40 @@
+/*
+ * 通用域的字号步进。
+ *
+ * 用 ± 按钮而不是滑杆：范围只有 10–22，滑杆的可用行程太短，一拖就跳过头，
+ * 而字号差一点用户立刻能看出来。数字居中并用等宽数字，跳动时不左右抖。
+ */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-input);
+  overflow: hidden;
+}
+
+.stepper button {
+  min-width: 28px;
+  height: 30px;
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-md);
+}
+
+.stepper button:hover:not(:disabled) {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.value {
+  min-width: 56px;
+  text-align: center;
+  font-size: var(--ag-fs-ui-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ag-alias-text-primary);
+}

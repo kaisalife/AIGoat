@@ -1,0 +1,68 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  width: 180px;
+  padding: var(--ag-space-3) var(--ag-space-2);
+  gap: 2px;
+  border-right: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+  overflow: auto;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  min-height: 30px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-md);
+  text-align: left;
+  transition:
+    background var(--ag-dur-fast) var(--ag-ease),
+    color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.item:hover {
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-primary);
+}
+
+.active {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-weight: 600;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+}
+
+.badge {
+  flex: none;
+  padding: 0 5px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 窄屏：侧导航落成顶部横向 tab */
+@media (max-width: 640px) {
+  .nav {
+    flex-direction: row;
+    width: 100%;
+    border-right: none;
+    border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+    padding: var(--ag-space-2);
+    overflow-x: auto;
+  }
+
+  .item {
+    flex: none;
+  }
+}

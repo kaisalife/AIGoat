@@ -1,0 +1,100 @@
+﻿/*
+ * 计划胶囊。
+ *
+ * 三态靠**颜色 + 结构**双通道区分，不只靠颜色——色弱用户也要能看出
+ * "计划在跑"还是"计划做完了"。
+ */
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  max-width: var(--ag-content-max);
+  margin: 0 auto var(--ag-space-2);
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-raised);
+}
+
+.active {
+  border-color: var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+}
+
+.done {
+  border-color: var(--ag-alias-success-line);
+}
+
+.label {
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.active .label {
+  color: var(--ag-alias-accent);
+}
+
+/* 进度条：2px 高就够，它是"在推进"的信号，不是要读数的量表 */
+.progress {
+  display: inline-block;
+  width: 56px;
+  height: 3px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-overlay);
+  overflow: hidden;
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  background: var(--ag-alias-accent);
+  transition: width var(--ag-dur-slow) var(--ag-ease);
+}
+
+.count {
+  color: var(--ag-alias-accent);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.toggle {
+  align-self: flex-start;
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.steps {
+  margin: 0;
+  padding-left: var(--ag-space-5);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+}
+
+.step {
+  line-height: var(--ag-lh-base);
+}
+
+.stepMark {
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+  color: var(--ag-alias-text-muted);
+}
+
+.step_completed .stepMark {
+  color: var(--ag-alias-success);
+}
+
+.step_completed .stepText {
+  color: var(--ag-alias-text-muted);
+  text-decoration: line-through;
+}
+
+.step_inProgress .stepMark {
+  color: var(--ag-alias-accent);
+}
+
+.stepText {
+  margin-left: var(--ag-space-1);
+}

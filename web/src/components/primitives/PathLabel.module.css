@@ -1,0 +1,31 @@
+.path {
+  display: inline-flex;
+  align-items: baseline;
+  min-width: 0;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-tight);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.leading {
+  color: var(--ag-alias-text-muted);
+  flex: none;
+}
+
+.segment {
+  color: var(--ag-alias-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 分隔符跟着父级走，末级才提亮——一长串斜杠不再抢视线 */
+.sep {
+  color: var(--ag-alias-text-muted);
+  margin-right: 0.3em;
+}
+
+.last {
+  color: var(--ag-alias-text-primary);
+}

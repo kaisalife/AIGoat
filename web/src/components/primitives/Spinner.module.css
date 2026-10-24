@@ -1,0 +1,27 @@
+.spinner {
+  --ag-spinner-size: 14px;
+  display: inline-block;
+  flex: none;
+  width: var(--ag-spinner-size);
+  height: var(--ag-spinner-size);
+  border-radius: var(--ag-radius-pill);
+  /* 轨道极低对比，转动的弧才读得出「在转」而不是「是个圈」 */
+  border: 1.5px solid var(--ag-alias-border);
+  border-top-color: var(--ag-alias-accent);
+  animation: ag-spin 0.7s linear infinite;
+}
+
+@keyframes ag-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 动效降级时（prefers-reduced-motion）只留静态的弧，避免一直转 */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    border-top-color: var(--ag-alias-accent);
+    border-right-color: var(--ag-alias-accent);
+  }
+}

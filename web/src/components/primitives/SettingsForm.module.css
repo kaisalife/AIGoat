@@ -1,0 +1,123 @@
+.field {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: var(--ag-space-3) var(--ag-space-4);
+  align-items: start;
+  padding: var(--ag-space-3) 0;
+}
+
+.field + .field {
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.labels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  min-width: 0;
+  padding-top: 5px;
+}
+
+.label {
+  font-size: var(--ag-fs-ui-md);
+  color: var(--ag-alias-text-primary);
+}
+
+.hint {
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-tight);
+  color: var(--ag-alias-text-muted);
+}
+
+.error {
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-tight);
+  color: var(--ag-alias-danger);
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  min-width: 0;
+}
+
+.control > input,
+.control > select,
+.control > textarea {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.control > textarea {
+  height: auto;
+  min-height: 68px;
+  padding: var(--ag-space-2);
+  resize: vertical;
+  line-height: var(--ag-lh-base);
+}
+
+.control > input:focus,
+.control > select:focus,
+.control > textarea:focus {
+  border-color: var(--ag-alias-accent);
+}
+
+.control > input::placeholder,
+.control > textarea::placeholder {
+  color: var(--ag-alias-text-muted);
+}
+
+/* 窄屏（设置中心跟着视口缩）落单列，标签在上 */
+@media (max-width: 640px) {
+  .field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ag-space-2);
+  }
+
+  .labels {
+    padding-top: 0;
+  }
+}
+
+.section + .section {
+  margin-top: var(--ag-space-5);
+}
+
+.sectionHead {
+  margin-bottom: var(--ag-space-2);
+}
+
+.sectionTitle {
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.sectionDesc {
+  margin-top: var(--ag-space-1);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.fields {
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  padding: 0 var(--ag-space-3);
+  background: var(--ag-alias-bg-raised);
+}
+
+.fields > .field:first-child {
+  padding-top: var(--ag-space-1);
+}
+
+.fields > .field:last-child {
+  padding-bottom: var(--ag-space-1);
+}

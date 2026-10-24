@@ -1,0 +1,41 @@
+﻿/*
+ * 压缩常驻提示条。
+ *
+ * 位置在输入区正上方（和目标条同一带）：它是"发消息之前该知道的事"，
+ * 放到消息流里就变成了"回头翻才看得见的事"。
+ */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  max-width: var(--ag-content-max);
+  margin: 0 auto var(--ag-space-2);
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-warning-line);
+  background: var(--ag-alias-warning-soft);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-secondary);
+}
+
+.icon {
+  flex: none;
+  color: var(--ag-alias-warning);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.text {
+  min-width: 0;
+}
+
+.link {
+  flex: none;
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.link:hover {
+  text-decoration: underline;
+}

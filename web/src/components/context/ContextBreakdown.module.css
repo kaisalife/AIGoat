@@ -1,0 +1,72 @@
+.panel {
+  flex: none;
+  padding: var(--ag-space-3);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin-bottom: var(--ag-space-2);
+}
+
+.title {
+  font-size: var(--ag-fs-ui-sm);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.close {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-md);
+  line-height: 1;
+}
+
+.close:hover {
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-primary);
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--ag-space-1) var(--ag-space-3);
+  margin: 0;
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.kv dt {
+  color: var(--ag-alias-text-muted);
+}
+
+.kv dd {
+  margin: 0;
+  color: var(--ag-alias-text-primary);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* 命中率紧跟在数字后面，绿色表示"这部分是白拿的" */
+.rate {
+  margin-left: var(--ag-space-2);
+  color: var(--ag-alias-success);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.note {
+  margin: var(--ag-space-3) 0 0;
+  padding-top: var(--ag-space-2);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+}

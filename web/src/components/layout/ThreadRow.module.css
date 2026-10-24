@@ -1,0 +1,62 @@
+/*
+ * 会话行。
+ *
+ * 状态点与拖拽把手都是"只在必要时出现"的东西：
+ * - 状态点平时是一个灰点（idle），跑起来才变蓝并呼吸；出错变红
+ * - 拖拽把手只在未搜索时可拖，否则给的是搜索结果的临时视图，
+ *   在它里面重排会把用户搞不懂的顺序写进设置
+ */
+
+.grip {
+  flex: none;
+  width: 12px;
+  text-align: center;
+  color: var(--ag-alias-text-muted);
+  font-size: 10px;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity var(--ag-dur-fast) var(--ag-ease);
+}
+
+.threadrow:hover .grip {
+  opacity: 0.7;
+}
+
+/* ---------------------------------------------- 状态点 */
+
+.dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-right: var(--ag-space-1);
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-border-strong);
+}
+
+.dotRun {
+  background: var(--ag-alias-accent);
+  box-shadow: 0 0 0 0 var(--ag-alias-accent-soft);
+  animation: dot-pulse 1.6s var(--ag-ease) infinite;
+}
+
+.dotErr {
+  background: var(--ag-alias-danger);
+}
+
+@keyframes dot-pulse {
+  70%,
+  100% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dotRun {
+    animation: none;
+  }
+}
+
+/* 运行中的行：底色极浅，让"在跑"这件事在扫列表时就能看出来 */
+:global(.threaditem).is-running {
+  background: var(--ag-alias-accent-soft);
+}

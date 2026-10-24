@@ -1,0 +1,79 @@
+/*
+ * 图片事件卡片（imageView / imageGeneration）。
+ *
+ * 缩略图统一 200px 高：模型读到的图尺寸五花八门（截图很长、图标很小），
+ * 不约束的话消息流里会出现一张占满半屏的截图。
+ */
+
+.view {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  padding: 0;
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.image {
+  display: block;
+  max-height: 200px;
+  max-width: 100%;
+  object-fit: contain;
+  background: var(--ag-alias-code-bg);
+}
+
+.zoom {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  padding: 1px 6px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-translucent);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+  opacity: 0;
+}
+
+.thumb:hover .zoom {
+  opacity: 1;
+}
+
+.caption {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  font-family: var(--ag-font-mono);
+}
+
+.loading,
+.broken {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 120px;
+  padding: var(--ag-space-2);
+  background: var(--ag-alias-code-bg);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.reason {
+  margin: 0;
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-sm);
+}

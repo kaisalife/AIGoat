@@ -1,0 +1,42 @@
+/*
+ * 拖拽把手。
+ *
+ * 默认不可见，hover 或拖拽中才显形——两列并排时常驻一条竖线会一直
+ * 抢视线，而用户想拖的时候鼠标总归会先靠近它。
+ */
+
+.handle {
+  position: relative;
+  flex: none;
+  width: 5px;
+  margin: 0 -2px;
+  cursor: col-resize;
+  z-index: var(--ag-z-drag);
+  touch-action: none;
+}
+
+/* 真正的热区只有中间 1px，其余留给上下相邻的列 */
+.handle::after {
+  content: '';
+  position: absolute;
+  inset: 0 2px;
+  border-radius: var(--ag-radius-pill);
+  background: transparent;
+  transition: background var(--ag-dur-fast) var(--ag-ease);
+}
+
+.handle:hover::after,
+.handle:focus-visible::after,
+.handle[data-dragging]::after {
+  background: var(--ag-alias-accent-line);
+}
+
+.handle[data-dragging]::after {
+  background: var(--ag-alias-accent);
+}
+
+/* 拖拽中锁住全局指针事件与选中：否则会顺带把拖过的文字全选上 */
+body[data-dragging] {
+  cursor: col-resize;
+  user-select: none;
+}

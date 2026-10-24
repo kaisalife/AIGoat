@@ -1,0 +1,77 @@
+﻿/*
+ * 消息流：消息排版（`.msg*`）。
+ *
+ * 滚动容器与浮层（回到底部 / 账本开关 / 档位切换）**不在这里**——会话流
+ * 重构后它们属于 `components/chat/ConversationStream.module.css`（CSS Modules）。
+ * 这里只保留消息本身的全局排版类；别再把容器/滚动相关样式加回来，
+ * 否则又会分叉出第二套实现。
+ */
+
+/* ---------------------------------------------- 消息排版 */
+
+.msg__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin-bottom: var(--ag-space-1);
+}
+
+.msg__who {
+  font-size: var(--ag-fs-ui-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--ag-alias-text-muted);
+}
+
+.msg__badge {
+  padding: 0 6px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-size: 10px;
+}
+
+/* 消息级操作（复制）：悬停或键盘聚焦时才浮现——常驻会与正文抢注意力。 */
+.msg__actions {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity var(--ag-dur-fast) var(--ag-ease);
+}
+
+.msg:hover .msg__actions,
+.msg__actions:focus-within {
+  opacity: 1;
+}
+
+.msg__action {
+  padding: 0 var(--ag-space-1);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: 1.6;
+}
+
+.msg__action:hover {
+  color: var(--ag-alias-accent);
+  background: var(--ag-alias-accent-soft);
+}
+
+.msg__body {
+  line-height: var(--ag-lh-base);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* 用户消息：左侧一道强调色竖线，右侧圆角——和助手正文区分得开，
+   又不像气泡那样把两边都收圆（收圆会显得在「对话」）。 */
+.msg--user .msg__body {
+  padding: var(--ag-space-2) var(--ag-space-3);
+  background: var(--ag-alias-bg-raised);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  border-left: 2px solid var(--ag-alias-accent);
+  border-radius: 0 var(--ag-radius-lg) var(--ag-radius-lg) 0;
+}
+
+.msg--assistant .msg__body {
+  color: var(--ag-alias-text-primary);
+}

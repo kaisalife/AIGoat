@@ -1,0 +1,66 @@
+/* 左栏。会话列表是左栏的主角。 */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--ag-alias-bg-surface);
+  overflow: hidden;
+}
+
+.sidebar--left {
+  width: var(--ag-sidebar-w);
+  flex: none;
+}
+
+/* ---------------------------- 会话行 ---------------------------- */
+
+.threaditem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border-left: 2px solid transparent;
+  border-radius: 0 var(--ag-radius-md) var(--ag-radius-md) 0;
+  text-align: left;
+  transition: background var(--ag-dur-fast) var(--ag-ease);
+}
+
+.threaditem:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.threaditem.is-active {
+  background: var(--ag-alias-accent-soft);
+  border-left-color: var(--ag-alias-accent);
+}
+
+.threaditem__title {
+  font-size: var(--ag-fs-ui-md);
+  color: var(--ag-alias-text-primary);
+}
+
+.threaditem.is-active .threaditem__title {
+  color: var(--ag-alias-text-primary);
+}
+
+.threaditem__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  min-width: 0;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.threaditem__model {
+  font-family: var(--ag-font-mono);
+  min-width: 0;
+}
+
+.threaditem__time {
+  margin-left: auto;
+  flex: none;
+  font-family: var(--ag-font-mono);
+}

@@ -1,0 +1,41 @@
+﻿/*
+ * 子代理只读 tab。
+ *
+ * 面板本身不滚动（里面的 ConversationStream 自己滚），只有空态/提示居中。
+ */
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.id {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.empty {
+  margin: auto;
+  padding: var(--ag-space-6) var(--ag-space-4);
+  max-width: 360px;
+  text-align: center;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+}

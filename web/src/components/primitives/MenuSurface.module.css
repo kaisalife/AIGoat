@@ -1,0 +1,93 @@
+/*
+ * 菜单面板皮肤。fixed 定位与 z-index 在这里、坐标由 Menu 传入
+ * （`useAnchoredPosition` 的产物），外观与滚动在这里——
+ * 「定位在哪」与「长什么样」分开，Menu 才能量到实测宽高做视口钳制。
+ */
+.surface {
+  position: fixed;
+  z-index: var(--ag-z-popover);
+  max-width: 320px;
+  max-height: 360px;
+  overflow: auto;
+  padding: var(--ag-space-1);
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  /* 菜单 blur 材质：底下是消息流时也不会糊成一片 */
+  background: var(--ag-alias-bg-translucent);
+  backdrop-filter: var(--ag-blur-overlay);
+  box-shadow: var(--ag-shadow-e2);
+  animation: ag-menu-in var(--ag-dur-fast) var(--ag-ease);
+}
+
+@keyframes ag-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surface {
+    animation: none;
+  }
+}
+
+.group + .group {
+  margin-top: var(--ag-space-1);
+  padding-top: var(--ag-space-1);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.groupLabel {
+  padding: var(--ag-space-1) var(--ag-space-2);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  letter-spacing: 0.02em;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  width: 100%;
+  min-height: 28px;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+  text-align: left;
+}
+
+.item:hover,
+.active {
+  background: var(--ag-alias-bg-raised);
+}
+
+.danger {
+  color: var(--ag-alias-danger);
+}
+
+.danger:hover,
+.danger.active {
+  background: var(--ag-alias-danger-soft);
+}
+
+/* 禁用项置灰而不是隐藏：隐藏会让用户以为功能不存在 */
+.disabled {
+  color: var(--ag-alias-text-muted);
+  cursor: default;
+}
+
+.itemLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hint {
+  flex: none;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}

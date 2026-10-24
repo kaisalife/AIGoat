@@ -1,0 +1,105 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ag-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ag-space-5);
+  /* 实底遮罩，不要任何透明：挡住的部分就是看不到 */
+  background: var(--ag-alias-focus-offset);
+  animation: ag-fade var(--ag-dur-base) var(--ag-ease);
+}
+
+@keyframes ag-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-height: min(800px, 90vh);
+  width: min(560px, 90vw);
+  border-radius: var(--ag-radius-card);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-surface);
+  box-shadow: var(--ag-shadow-e3);
+  overflow: hidden;
+  animation: ag-rise var(--ag-dur-base) var(--ag-ease);
+}
+
+.narrow {
+  width: min(400px, 90vw);
+}
+
+.default {
+  width: min(560px, 90vw);
+}
+
+.wide {
+  width: min(800px, 90vw);
+}
+
+/* 设置中心占满可用高度，域导航才有纵深可循 */
+.full {
+  width: min(800px, 90vw);
+  height: min(800px, 90vh);
+}
+
+@keyframes ag-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .panel {
+    animation: none;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ag-space-3);
+  padding: var(--ag-space-4) var(--ag-space-4) var(--ag-space-3);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--ag-fs-ui-lg);
+  font-weight: 600;
+  line-height: var(--ag-lh-tight);
+}
+
+.description {
+  margin-top: var(--ag-space-1);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--ag-space-4);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-3) var(--ag-space-4);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+}

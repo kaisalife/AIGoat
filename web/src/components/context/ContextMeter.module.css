@@ -1,0 +1,66 @@
+/*
+ * 环形上下文占用（13 号板块）。
+ *
+ * 直径 28px、环宽 3px —— 嵌在 composer 下缘，不能再大。
+ */
+
+.meter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ag-radius-pill);
+  color: var(--ag-alias-text-muted);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.ring {
+  width: 28px;
+  height: 28px;
+  transform: rotate(0deg);
+}
+
+.track {
+  fill: none;
+  stroke: var(--ag-alias-border);
+  stroke-width: 3;
+}
+
+.fill {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--ag-dur-slow) var(--ag-ease);
+}
+
+.ok {
+  color: var(--ag-alias-text-muted);
+}
+
+.warn {
+  color: var(--ag-alias-warning);
+}
+
+.danger {
+  color: var(--ag-alias-danger);
+}
+
+/* 窗口未知：不画环。画一个"满"的环会让人以为上下文用尽了 */
+.unknown {
+  color: var(--ag-alias-text-muted);
+}
+
+.question {
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+}

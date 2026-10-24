@@ -1,0 +1,138 @@
+/*
+ * 计划全文（右栏）。
+ *
+ * 步骤行三态靠「符号 + 颜色 + 删除线」三个通道区分，不只靠颜色。
+ */
+
+.pane {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--ag-space-3);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin-bottom: var(--ag-space-2);
+}
+
+.title {
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.live {
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.turn {
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+/* 计划理由：模型自己说的"为什么这么做"，比步骤本身更值得看 */
+.why {
+  margin: 0 0 var(--ag-space-3);
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-secondary);
+}
+
+/* 增量写入中的正文：斜体表示"这段还没定稿" */
+.draft {
+  margin: 0 0 var(--ag-space-3);
+  padding-left: var(--ag-space-2);
+  border-left: 2px dashed var(--ag-alias-border-strong);
+  font-size: var(--ag-fs-ui-xs);
+  font-style: italic;
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+  white-space: pre-wrap;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-secondary);
+}
+
+.mark {
+  flex: none;
+  width: 1em;
+  color: var(--ag-alias-text-muted);
+}
+
+.s_completed {
+  color: var(--ag-alias-text-muted);
+}
+
+.s_completed .mark {
+  color: var(--ag-alias-success);
+}
+
+.s_completed .text {
+  text-decoration: line-through;
+}
+
+.s_inProgress {
+  border-color: var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+}
+
+.s_inProgress .mark {
+  color: var(--ag-alias-accent);
+}
+
+.body {
+  min-width: 0;
+}
+
+.text {
+  margin: 0;
+  line-height: var(--ag-lh-base);
+}
+
+.hint {
+  margin-top: var(--ag-space-3);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.empty {
+  margin: var(--ag-space-6) var(--ag-space-3);
+  text-align: center;
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-muted);
+}
+
+.empty code {
+  padding: 1px 5px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+}

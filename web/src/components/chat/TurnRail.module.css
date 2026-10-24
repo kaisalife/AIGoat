@@ -1,0 +1,109 @@
+/*
+ * 回合导航条（04 §3.2）。移植 dsh `TurnNavigator` 的**交互意图**，但去掉
+ * 它的虚拟化与固定节距那套重实现——AIGoat 的回合量级（几十）用一条普通
+ * 竖列就够，也符合本仓「零 UI 依赖」的取舍。
+ *
+ * 贴左缘（不是右缘）：右缘是滚动条的地盘，浮标压上去会抢走滚动条的点击。
+ * 正文左侧留白 ~24px，这条 18px 的轨正好落在留白里。
+ */
+
+.rail {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  z-index: 7;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 18px;
+  /* 固定节距、不压缩：梯子比可视区高时在**框内**滚动，而不是被挤出上下缘。 */
+  max-height: min(60%, 420px);
+  padding: 4px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.mark {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* 刻度：靠左对齐的一小横杠，用 scaleX 表达状态强弱（移植 dsh 的 tick）。 */
+.mark::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ag-alias-border);
+  content: '';
+  transform: translateY(-50%) scaleX(0.55);
+  transform-origin: left center;
+  transition:
+    transform var(--ag-dur-fast) var(--ag-ease),
+    background var(--ag-dur-fast) var(--ag-ease);
+}
+
+.mark:hover::before {
+  transform: translateY(-50%) scaleX(0.9);
+  background: var(--ag-alias-text-secondary);
+}
+
+.mark[data-status='failed']::before {
+  background: var(--ag-alias-danger);
+}
+
+.mark[data-status='interrupted']::before {
+  background: var(--ag-alias-warning);
+}
+
+/* 运行中的那一轮：强调色 + 呼吸。即便它没被选作"当前高亮"（用户上翻时），
+   也能一眼看到"还在跑的是哪一轮"——这是长会话里最想知道的一件事。 */
+.mark[data-status='inProgress']::before {
+  background: var(--ag-alias-accent);
+  animation: turn-mark-busy 1s ease-in-out infinite;
+}
+
+@keyframes turn-mark-busy {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* 当前回合（运行中的那一轮，或最近一轮）：满格 + 强调色。 */
+.mark[data-active]::before,
+.mark:focus-visible::before {
+  transform: translateY(-50%) scaleX(1);
+  background: var(--ag-alias-accent);
+}
+
+.mark:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark::before {
+    transition: none;
+  }
+
+  .mark[data-status='inProgress']::before {
+    animation: none;
+  }
+}

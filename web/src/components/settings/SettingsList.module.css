@@ -1,0 +1,90 @@
+/*
+ * 设置域共用的列表行与徽标。
+ *
+ * 三个域的条目形态一致：一行标题 + 一行等宽副信息 + 一枚状态徽标 +
+ * 右侧操作。徽标不靠颜色单独表意——文字也写状态（就绪 / exe 缺失），
+ * 色弱用户读得出来。
+ */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-bg-raised);
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rowTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+}
+
+.rowCode {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowDesc {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 1px var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  white-space: nowrap;
+}
+
+.badgeOk {
+  border-color: var(--ag-alias-success-line);
+  color: var(--ag-alias-success);
+}
+
+.badgeDanger {
+  border-color: var(--ag-alias-danger-line);
+  color: var(--ag-alias-danger);
+}
+
+/* 就地确认条：留在行末，用户看得清在删哪一条 */
+.confirm {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+}
+
+.confirmText {
+  max-width: 260px;
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-tight);
+  color: var(--ag-alias-danger);
+}

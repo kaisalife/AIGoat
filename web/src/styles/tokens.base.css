@@ -1,0 +1,206 @@
+/*
+ * token 基础层：原始值。整个设计系统里字面量只允许出现在本文件。
+ *
+ * 结构抄 dsh 的双层 token 体系（packages/client/ui-theme/src/styles/ 的 8 张表，
+ * 这里合成一张表、拆成两个文件）：基础层定义原始值 → 语义层 `--ag-alias-*`
+ * 定义别名（tokens.css）→ 组件样式只准消费别名。间距/圆角/字号等非颜色原语
+ * 不进别名层，直接以 `--ag-*` 消费（dsh 同款：别名层只管颜色）。
+ *
+ * 取向：**暖调 · 质朴橙**（延续既有视觉，只换结构）。
+ * - 基底暖褐而非纯灰，像旧纸与陶土，长时间阅读不刺眼
+ * - 强调色低饱和赤陶橙（rust），「质朴」靠降饱和度实现
+ * - 语义色全落在暖色域内；唯一冷色是 info（dusty slate），只做必要冷暖对比
+ *
+ * 主题：**暗色为默认**（IDE 长时间使用），亮色用 `[data-theme='light']`
+ * 覆盖同名基础值。`:root` 直接承载暗色而非「亮色 + 暗色覆盖」，
+ * 这样脚本没跑起来首屏也是暗色，不会先闪一下亮色。
+ * `theme: system` 由 main.tsx 在首屏前解析成 light/dark 写进 `data-theme`
+ * （见 store/settings.ts 的 resolveTheme），因此这里不需要媒体查询分支。
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* ---------- 中性色 12 阶（暖灰，0 最深 → 11 最浅） ---------- */
+  --ag-neutral-0: #14100c;
+  --ag-neutral-1: #191511;
+  --ag-neutral-2: #1f1a15;
+  --ag-neutral-3: #262019;
+  --ag-neutral-4: #2e2720;
+  --ag-neutral-5: #3a3129;
+  --ag-neutral-6: #4c4036;
+  --ag-neutral-7: #6b5c4d;
+  --ag-neutral-8: #8a7c6d;
+  --ag-neutral-9: #b2a496;
+  --ag-neutral-10: #ddd3c5;
+  --ag-neutral-11: #f7f1e8;
+
+  /* ---------- 语义色 5 组 × 4 档（base / strong / soft / line） ---------- */
+  --ag-accent: #cf7a45;
+  --ag-accent-strong: #dd8b58;
+  --ag-accent-soft: rgba(207, 122, 69, 0.16);
+  --ag-accent-line: rgba(207, 122, 69, 0.42);
+
+  --ag-success: #8bab63;
+  --ag-success-strong: #9cbd74;
+  --ag-success-soft: rgba(139, 171, 99, 0.16);
+  --ag-success-line: rgba(139, 171, 99, 0.42);
+
+  --ag-warning: #d5a13f;
+  --ag-warning-strong: #e0b055;
+  --ag-warning-soft: rgba(213, 161, 63, 0.16);
+  --ag-warning-line: rgba(213, 161, 63, 0.42);
+
+  --ag-danger: #cf5f4a;
+  --ag-danger-strong: #dc7461;
+  --ag-danger-soft: rgba(207, 95, 74, 0.16);
+  --ag-danger-line: rgba(207, 95, 74, 0.42);
+
+  --ag-info: #7f97a6;
+  --ag-info-strong: #93a9b6;
+  --ag-info-soft: rgba(127, 151, 166, 0.16);
+  --ag-info-line: rgba(127, 151, 166, 0.42);
+
+  /* ---------- 层次：elevation 阴影（e1–e3）替代边框堆叠 ---------- */
+  --ag-shadow-e1: 0 1px 2px rgba(0, 0, 0, 0.34);
+  --ag-shadow-e2: 0 4px 14px rgba(0, 0, 0, 0.38);
+  --ag-shadow-e3: 0 18px 48px rgba(0, 0, 0, 0.5);
+  /* 菜单/浮层的 blur 材质 */
+  --ag-blur-overlay: saturate(1.4) blur(20px);
+  /* 发丝线：0.5px 中性边框，dsh 视觉规范的最小描边 */
+  --ag-hairline: 0.5px;
+
+  /* ---------- 圆角（dsh：sm 6 / md 10 / card 20） ---------- */
+  --ag-radius-sm: 6px;
+  --ag-radius-md: 10px;
+  --ag-radius-lg: 14px;
+  --ag-radius-card: 20px;
+  --ag-radius-pill: 999px;
+  /* superellipse 裁角强度，配 border-radius: calc(...) 用 */
+  --ag-superellipse: 0.28;
+
+  /* ---------- 间距：4px 基准 ---------- */
+  --ag-space-1: 4px;
+  --ag-space-2: 8px;
+  --ag-space-3: 12px;
+  --ag-space-4: 16px;
+  --ag-space-5: 24px;
+  --ag-space-6: 32px;
+
+  /* ---------- 字号：UI 档固定，内容档随设置中心 10–22px 缩放 ---------- */
+  --ag-fs-ui-xs: 11px;
+  --ag-fs-ui-sm: 12px;
+  --ag-fs-ui-md: 13px;
+  --ag-fs-ui-lg: 14px;
+  /* 内容档只存一个数，派生尺寸全走 calc——改一处即整档缩放 */
+  --ag-content-size: 14;
+  --ag-fs-content-sm: calc(var(--ag-content-size) * 0.86px);
+  --ag-fs-content-base: calc(var(--ag-content-size) * 1px);
+  --ag-fs-content-lg: calc(var(--ag-content-size) * 1.15px);
+  --ag-fs-content-xl: calc(var(--ag-content-size) * 1.35px);
+  --ag-lh-tight: 1.35;
+  --ag-lh-base: 1.6;
+
+  /* ---------- 字体栈 ---------- */
+  --ag-font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --ag-font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas,
+    'Liberation Mono', monospace;
+
+  /* ---------- 动效：120–180ms ---------- */
+  --ag-dur-fast: 120ms;
+  --ag-dur-base: 160ms;
+  --ag-dur-slow: 180ms;
+  --ag-ease: cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* ---------- 内容宽度 ---------- */
+/* 消息流 / 输入框 / 卡片等"正文区"的最大宽度。
+   之前钉死 860px：窗口最大化/全屏时中栏远比这宽，正文两侧全是空白，
+   用户观感就是"界面铺不满"。放宽到 1400px（长行的可读上限），
+   小于它的中栏照旧 100% 占满；要更宽/更窄只改这一个变量。 */
+  --ag-content-max: 1400px;
+  /* 自绘窗口条（WindowBar）的高度：浮层用它把自己从窗口条下面避开，
+     与 dsh 的 --dsh-frame-top-clearance 同一角色。 */
+  --ag-frame-top-clearance: 32px;
+
+/* ---------- z-index 层表 ---------- */
+  --ag-z-base: 0;
+  --ag-z-sticky: 10;
+  --ag-z-dock: 20;
+  --ag-z-drag: 30;
+  --ag-z-popover: 40;
+  --ag-z-modal: 50;
+  --ag-z-toast: 60;
+
+  /* ---------- 布局尺寸 ---------- */
+  --ag-topbar-h: 48px;
+  --ag-statusbar-h: 28px;
+  /* 左栏折叠成的 rail 宽度（dsh 同值 56px） */
+  --ag-rail-w: 56px;
+  --ag-sidebar-w: 280px;
+  --ag-inspector-w: 320px;
+  --ag-composer-min-h: 88px;
+}
+
+/* ==================== 亮色：旧纸（工作区最亮，边框区略沉） ==================== *
+ * 反过来（工作区比侧栏暗）会让大片空白显得沉重，所以层级关系与暗色同向。
+ * 亮色底上要压深才够对比，因此语义色不是暗色那套值。
+ */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --ag-neutral-0: #fffdfa;
+  --ag-neutral-1: #fbf7f1;
+  --ag-neutral-2: #f4efe7;
+  --ag-neutral-3: #ece5d9;
+  --ag-neutral-4: #e4dbcd;
+  --ag-neutral-5: #d9cdbd;
+  --ag-neutral-6: #c3b5a2;
+  --ag-neutral-7: #a3937f;
+  --ag-neutral-8: #867762;
+  --ag-neutral-9: #6d5f52;
+  --ag-neutral-10: #43382d;
+  --ag-neutral-11: #2b2119;
+
+  --ag-accent: #b25c27;
+  --ag-accent-strong: #9c4d1e;
+  --ag-accent-soft: rgba(178, 92, 39, 0.12);
+  --ag-accent-line: rgba(178, 92, 39, 0.34);
+
+  --ag-success: #567a35;
+  --ag-success-strong: #466429;
+  --ag-success-soft: rgba(86, 122, 53, 0.12);
+  --ag-success-line: rgba(86, 122, 53, 0.34);
+
+  --ag-warning: #93670f;
+  --ag-warning-strong: #7a5609;
+  --ag-warning-soft: rgba(147, 103, 15, 0.12);
+  --ag-warning-line: rgba(147, 103, 15, 0.34);
+
+  --ag-danger: #ad3823;
+  --ag-danger-strong: #8f2d1b;
+  --ag-danger-soft: rgba(173, 56, 35, 0.12);
+  --ag-danger-line: rgba(173, 56, 35, 0.34);
+
+  --ag-info: #4e6b7d;
+  --ag-info-strong: #3f5867;
+  --ag-info-soft: rgba(78, 107, 125, 0.12);
+  --ag-info-line: rgba(78, 107, 125, 0.34);
+
+  /* 亮色下的投影要更浅，否则脏 */
+  --ag-shadow-e1: 0 1px 2px rgba(64, 48, 32, 0.1);
+  --ag-shadow-e2: 0 4px 14px rgba(64, 48, 32, 0.12);
+  --ag-shadow-e3: 0 18px 48px rgba(64, 48, 32, 0.16);
+}
+
+/* 紧凑模式：用户偏好「一屏放下更多内容」时开。只动间距与行高，不动字号档。 */
+[data-density='compact'] {
+  --ag-space-3: 8px;
+  --ag-space-4: 12px;
+  --ag-space-5: 16px;
+  --ag-space-6: 24px;
+  --ag-topbar-h: 40px;
+  --ag-statusbar-h: 24px;
+  --ag-composer-min-h: 72px;
+  --ag-lh-base: 1.5;
+}

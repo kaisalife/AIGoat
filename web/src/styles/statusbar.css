@@ -1,0 +1,99 @@
+/*
+ * 状态栏。同样是全局类名：只有 StatusBar.tsx 一个消费者，但它用的是
+ * statusbar__item 这类语义名，改成 Module 只会让 CSS 与组件里的
+ * 字符串对不上号。
+ */
+
+/* ---------------------------- 状态栏 ---------------------------- */
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  padding: 0 var(--ag-space-3);
+  background: var(--ag-alias-bg-surface);
+  border-top: 1px solid var(--ag-alias-border);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.statusbar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  min-width: 0;
+}
+
+.statusbar__value {
+  font-family: var(--ag-font-mono);
+  color: var(--ag-alias-text-primary);
+}
+
+.statusbar__muted {
+  color: var(--ag-alias-text-muted);
+}
+
+.statusbar__sep {
+  width: 1px;
+  height: 12px;
+  background: var(--ag-alias-border);
+  flex: none;
+}
+
+.statusbar__badge {
+  padding: 0 6px;
+  border-radius: var(--ag-radius-pill);
+  font-size: 10px;
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-secondary);
+}
+
+.statusbar__badge.is-ok {
+  background: var(--ag-alias-success-soft);
+  color: var(--ag-alias-success);
+}
+
+.statusbar__badge.is-danger {
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+}
+
+.statusbar__badge.is-warn {
+  background: var(--ag-alias-warning-soft);
+  color: var(--ag-alias-warning);
+}
+
+.statusbar__badge.is-accent {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+}
+
+.statusbar__hint {
+  color: var(--ag-alias-text-muted);
+  max-width: 40%;
+}
+
+
+/* 断线时的「重新连接」入口。不用浮层提示——提示会自己消失，
+   而这件事用户必须看到并能主动处理。 */
+.statusbar__reconnect {
+  padding: 1px var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-danger-line);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-xs);
+  font-weight: 600;
+}
+
+.statusbar__reconnect:hover:not(:disabled) {
+  background: var(--ag-alias-danger);
+  color: var(--ag-alias-text-on-accent);
+}
+
+.statusbar__reconnect:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

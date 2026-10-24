@@ -1,0 +1,60 @@
+name: CI
+
+# 静态门禁全套（与 tools/verify.ps1 的 1–5、8–10 关一致）。
+# 第 6/7 关（协议漂移 / 线格式 parity）依赖本机 codex 二进制重新生成协议
+# 基线，CI 上没有——那是发布前的本地步骤，见 verify.ps1。
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  gates:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: 安装前端依赖
+        run: npm ci
+        working-directory: web
+
+      # tauri-build 在编译 Rust 时要求前端产物已存在，先 build web。
+      # （vite build 之前会跑 tsc，所以这一步同时覆盖 typecheck。）
+      - name: 前端构建（含 typecheck）
+        run: npm run build
+        working-directory: web
+
+      - name: 前端单测
+        run: npm run test
+        working-directory: web
+
+      - name: clippy
+        run: cargo clippy --all-targets -- -D warnings
+        working-directory: src-tauri
+
+      - name: rustfmt
+        run: cargo fmt --all --check
+        working-directory: src-tauri
+
+      - name: 桥接接线
+        run: python tools/check_bridge_wiring.py
+
+      - name: 跨桥字段契约（读方向）
+        run: python tools/check_field_contract.py
+
+      - name: 跨桥字段契约（发方向）
+        run: python tools/check_emit_fields.py

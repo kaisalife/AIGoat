@@ -1,0 +1,12 @@
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: var(--ag-space-2) 0;
+  gap: var(--ag-space-1);
+}
+
+.spacer {
+  flex: 1;
+}

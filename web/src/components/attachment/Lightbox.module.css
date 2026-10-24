@@ -1,0 +1,39 @@
+/*
+ * 灯箱。
+ *
+ * 舞台占满可用空间并保持比例：图片可能很宽（截图）或很高（长图），
+ * 固定尺寸就会出现一半被裁掉的情况。
+ */
+
+.modal {
+  /* 灯箱要尽量大——模态的默认 800px 宽度对看图不够用 */
+  width: min(1200px, 94vw);
+  height: min(900px, 90vh);
+}
+
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ag-alias-code-bg);
+  border-radius: var(--ag-radius-sm);
+  padding: var(--ag-space-2);
+}
+
+.image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-5);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}

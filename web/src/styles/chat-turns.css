@@ -1,0 +1,172 @@
+/*
+ * 回合层：回合头、过程组、推理行、用量条、回合导航 rail。
+ *
+ * 这几块的共同点是「信息密度高但可折叠」：一个回合可能有几十条过程条目，
+ * 所以默认收起，展开时才铺开细节。样式跟着这个前提走——收起态要一眼可辨，
+ * 展开态才允许出现次要信息。
+ */
+
+/* ---------------------------------------------- 回合块 */
+
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+}
+
+/* 运行中的回合：整块微微提亮，视线不用找就知道"现在动的是这一块" */
+.turn--running {
+  background: var(--ag-alias-accent-soft);
+  border-radius: var(--ag-radius-md);
+  padding: var(--ag-space-2);
+  margin: calc(var(--ag-space-2) * -1);
+}
+
+.turnhead {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  width: 100%;
+  min-height: 26px;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-sm);
+  text-align: left;
+}
+
+.turnhead:hover:not(:disabled) {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+}
+
+.turnhead:disabled {
+  cursor: default;
+}
+
+.turnhead--running {
+  color: var(--ag-alias-accent);
+}
+
+.turnhead__caret {
+  flex: none;
+  width: 0;
+  height: 0;
+  border-left: 4px solid currentColor;
+  border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  opacity: 0.7;
+  transition: transform var(--ag-dur-fast) var(--ag-ease);
+}
+
+.turnhead__caret.is-open {
+  transform: rotate(90deg) translateX(-1px);
+}
+
+.turnhead__label {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.turnhead__spacer {
+  flex: 1;
+}
+
+.turnhead__usage {
+  flex: none;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * 回滚按钮。平时不显形，鼠标移到整行才淡出——它是个次要的破坏性操作，
+ * 常驻会跟"这轮聊了什么"抢注意力。整行是折叠按钮，所以它必须
+ * stopPropagation（见 TurnHeader.tsx），否则点回滚会顺带折叠这一轮。
+ *
+ * 这几条原先写在一个**没人 import** 的 `TurnHeader.module.css` 里，
+ * 于是按钮一直是裸的、常显的。回合头其余样式都在本文件，就挪过来。
+ */
+.turnhead__revert {
+  flex: none;
+  padding: 0 var(--ag-space-1);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  opacity: 0;
+  transition: opacity var(--ag-dur-fast) var(--ag-ease);
+}
+
+.turnhead:hover .turnhead__revert {
+  opacity: 0.8;
+}
+
+.turnhead__revert:hover {
+  opacity: 1;
+  color: var(--ag-alias-warning);
+  background: var(--ag-alias-warning-soft);
+}
+
+.turn__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+  padding-left: var(--ag-space-3);
+  border-left: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+/* ---------------------------------------------- 过程组 */
+
+.process {
+  border-radius: var(--ag-radius-sm);
+}
+
+.process--running {
+  background: var(--ag-alias-accent-soft);
+}
+
+.process__label {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.process__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+}
+
+/* ---------------------------------------------- 推理 */
+
+.reasoning__title {
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.reasoning__len {
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 推理正文是纯文本：颜色比正文暗一档，让它退到背景里 */
+.reasoning__body {
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-content-sm);
+  line-height: var(--ag-lh-base);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* summary 段是模型自己写的"我要做什么"，比正文更值得先看到 */
+.reasoning__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  padding-left: var(--ag-space-2);
+  border-left: 2px solid var(--ag-alias-border);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-content-sm);
+  line-height: var(--ag-lh-base);
+}

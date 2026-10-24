@@ -1,0 +1,43 @@
+.group {
+  display: inline-flex;
+  align-items: stretch;
+  padding: 2px;
+  gap: 2px;
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.segment {
+  flex: 1;
+  min-height: 26px;
+  padding: 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-sm);
+  white-space: nowrap;
+  transition:
+    background var(--ag-dur-fast) var(--ag-ease),
+    color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.segment:hover:not(:disabled):not(.active) {
+  color: var(--ag-alias-text-primary);
+}
+
+.segment:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* 选中态用一层浅底而不是描边加粗：切换时布局不跳，两段宽度也不变 */
+.active {
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-primary);
+  box-shadow: var(--ag-shadow-e1);
+}

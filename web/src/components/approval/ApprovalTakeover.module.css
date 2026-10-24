@@ -1,0 +1,79 @@
+﻿/*
+ * 审批接管。
+ *
+ * 它**取代** composer 而不叠加在上面（12 号板块 §3.1）：审批期间模型在等
+ * 一个决定，输入区留着只会让人以为还能继续发消息（发出去也会被拒）。
+ */
+
+.takeover {
+  max-width: var(--ag-content-max);
+  margin: 0 auto var(--ag-space-2);
+  padding: var(--ag-space-3);
+  border-radius: var(--ag-radius-lg);
+  border: var(--ag-hairline) solid var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+}
+
+/* 危险命令：红色基调。这是唯一需要"停下来看一眼"的情形 */
+[data-danger] {
+  border-color: var(--ag-alias-danger);
+  background: var(--ag-alias-danger-soft);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin-bottom: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.kind {
+  padding: 1px var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+  white-space: nowrap;
+}
+
+.what {
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.danger {
+  padding: 1px var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-danger);
+  color: var(--ag-alias-text-on-accent);
+  font-size: var(--ag-fs-ui-xs);
+  white-space: nowrap;
+}
+
+.keys {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  white-space: nowrap;
+}
+
+.detail {
+  margin: var(--ag-space-2) 0 0;
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-code-bg);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+  color: var(--ag-alias-text-secondary);
+}
+
+.detail code {
+  font-family: var(--ag-font-mono);
+}
+
+.toggle {
+  margin-top: var(--ag-space-1);
+  padding: 0;
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+}

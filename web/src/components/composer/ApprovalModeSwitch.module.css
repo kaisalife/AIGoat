@@ -1,0 +1,39 @@
+/*
+ * 审批模式切换（composer 底栏）。
+ *
+ * 之前只有设置中心的「默认权限档位」能影响审批行为，对话界面没有任何
+ * 入口——想临时关掉逐个审批得跑到设置里改全局默认。这里给一个随手的
+ * 切换器：选择写入 settings.json 的 ui 段（`bridge_settings_set_ui`，
+ * 改它不需要重启 codex），下一回合的 `turn/start.approvalPolicy` 立即
+ * 按新档位计算。
+ */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  height: 24px;
+  padding: 0 var(--ag-space-2);
+  border: none;
+  border-radius: var(--ag-radius-sm);
+  background: none;
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+  cursor: pointer;
+  flex: none;
+}
+
+.switch:hover {
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-primary);
+}
+
+.switch:focus-visible {
+  outline: var(--ag-hairline) solid var(--ag-alias-accent);
+  outline-offset: -1px;
+}
+
+/* 「全部自动批准」必须一眼可辨：这是在关掉安全网 */
+.danger {
+  color: var(--ag-alias-danger);
+}

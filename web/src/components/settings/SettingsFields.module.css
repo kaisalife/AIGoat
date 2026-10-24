@@ -1,0 +1,105 @@
+/*
+ * 设置域共用的表单排版。
+ *
+ * 只服务三类编辑表单（提供商 / 模型 / 子 Agent），所以做成模块而不是全局表：
+ * 收窄后新板块要用同一个「三段式表单」时，直接 import 这份。
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-3);
+  padding: var(--ag-space-4);
+  border: var(--ag-hairline) solid var(--ag-alias-border-strong);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-bg-raised);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ag-space-3);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ag-space-2);
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  min-width: 0;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.check {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ag-space-2);
+  align-self: end;
+  padding-bottom: var(--ag-space-2);
+}
+
+.label {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.input {
+  width: 100%;
+  padding: 6px var(--ag-space-2);
+  background: var(--ag-alias-bg-input);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ag-alias-accent);
+}
+
+.hint {
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-tight);
+  color: var(--ag-alias-text-muted);
+}
+/* 接入方式二选一（外部进程 / codex 原生）：radio 语义的按钮组 */
+.inline {
+  display: flex;
+  gap: var(--ag-space-1);
+  flex-wrap: wrap;
+}
+
+.choice {
+  padding: 5px var(--ag-space-3);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  border-radius: var(--ag-radius-sm);
+  background: none;
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+  cursor: pointer;
+}
+
+.choice:hover {
+  background: var(--ag-alias-bg-overlay);
+}
+
+.choiceOn {
+  border-color: var(--ag-alias-accent);
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+}

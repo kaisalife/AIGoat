@@ -1,0 +1,79 @@
+/*
+ * diff 的文件级外壳（DiffView）。
+ *
+ * 与 `components/primitives/DiffBlock.module.css` 的分工：那份渲染**单个**
+ * unified diff 的行内容（工具卡里那种），这份只保留文件级头部（路径 + 类型
+ * 徽标 + 增删统计）。行级样式不要加回这里——它们已经在 DiffBlock 的模块里。
+ */
+
+/* ------------------------------ diff ------------------------------ */
+
+.diff {
+  border: 1px solid var(--ag-alias-border-subtle);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-bg-input);
+  overflow: hidden;
+}
+
+.diff__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-1) var(--ag-space-2);
+  background: var(--ag-alias-bg-raised);
+  border-bottom: 1px solid var(--ag-alias-border-subtle);
+}
+
+.diff__mark {
+  width: 14px;
+  text-align: center;
+  font-family: var(--ag-font-mono);
+  font-weight: 700;
+  color: var(--ag-alias-text-muted);
+  flex: none;
+}
+
+.diff__mark--add {
+  color: var(--ag-alias-success);
+}
+
+.diff__mark--delete {
+  color: var(--ag-alias-danger);
+}
+
+.diff__mark--update {
+  color: var(--ag-alias-warning);
+}
+
+.diff__path {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-primary);
+  min-width: 0;
+}
+
+/* `diff--raw` 是 RawDiff 的容器类（双连字符）；这里曾写成 `diff__raw`
+   （双下划线），选择器永远匹配不上，「回合 diff」的路径就一直没被压暗。 */
+.diff__move,
+.diff--raw .diff__path {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.diff__stat {
+  display: flex;
+  gap: var(--ag-space-2);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  flex: none;
+}
+
+.diff__body {
+  margin: 0;
+  padding: var(--ag-space-1) 0;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: 1.5;
+  overflow-x: auto;
+  max-height: 420px;
+  overflow-y: auto;
+}

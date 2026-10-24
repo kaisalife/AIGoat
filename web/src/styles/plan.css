@@ -1,0 +1,151 @@
+/*
+ * 计划面板（PlanPanel）。
+ */
+
+/* 计划面板、diff 视图、子 Agent 徽章。 */
+
+/* ----------------------------- 计划面板 ----------------------------- */
+
+.plan {
+  flex: none;
+  border-bottom: 1px solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-surface);
+}
+
+.plan__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  width: 100%;
+  padding: var(--ag-space-2) var(--ag-space-5);
+  text-align: left;
+}
+
+.plan__head:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.plan__caret {
+  width: 12px;
+  height: 12px;
+  color: var(--ag-alias-text-muted);
+  flex: none;
+  transition: transform var(--ag-dur-base) var(--ag-ease);
+}
+
+.plan__caret.is-open {
+  transform: rotate(90deg);
+}
+
+.plan__title {
+  font-size: var(--ag-fs-ui-sm);
+  font-weight: 600;
+  flex: none;
+}
+
+.plan__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+}
+
+.plan__bar {
+  display: block;
+  width: 72px;
+  height: 3px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-overlay);
+  overflow: hidden;
+}
+
+.plan__fill {
+  display: block;
+  height: 100%;
+  background: var(--ag-alias-accent);
+  transition: width var(--ag-dur-base) var(--ag-ease);
+}
+
+.plan__count {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.plan__why {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  min-width: 0;
+  max-width: 45%;
+}
+
+.plan__body {
+  padding: 0 var(--ag-space-5) var(--ag-space-3) calc(var(--ag-space-5) + 12px + var(--ag-space-2));
+}
+
+.plan__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan__step {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ag-space-2);
+  padding: 2px 0;
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.plan__glyph {
+  width: 14px;
+  text-align: center;
+  flex: none;
+  color: var(--ag-alias-text-muted);
+  font-size: 11px;
+}
+
+.plan__step--completed .plan__glyph {
+  color: var(--ag-alias-success);
+}
+
+.plan__step--completed .plan__step-text {
+  color: var(--ag-alias-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--ag-alias-border-strong);
+}
+
+.plan__step--inProgress .plan__glyph {
+  color: var(--ag-alias-accent);
+}
+
+.plan__step--inProgress .plan__step-text {
+  color: var(--ag-alias-text-primary);
+}
+
+.plan__step--blocked .plan__glyph,
+.plan__step--blocked .plan__step-text {
+  color: var(--ag-alias-danger);
+}
+
+.plan__step-text {
+  min-width: 0;
+  color: var(--ag-alias-text-secondary);
+}
+
+.plan__step-state {
+  margin-left: auto;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  flex: none;
+}
+
+.plan__draft {
+  margin-top: var(--ag-space-2);
+  padding-top: var(--ag-space-2);
+  border-top: 1px dashed var(--ag-alias-border-subtle);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-secondary);
+  white-space: pre-wrap;
+}
+

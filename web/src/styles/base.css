@@ -1,0 +1,131 @@
+/* 重置与排版基线。只做全局性的事，组件样式各自成文件。 */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--ag-alias-bg-root);
+  color: var(--ag-alias-text-primary);
+  font-family: var(--ag-font-ui);
+  font-size: var(--ag-fs-ui-md);
+  line-height: var(--ag-lh-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* 桌面应用不该整页选中文字，输入区与代码块自行处理 */
+  user-select: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+code,
+pre {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+/* 输入区与代码块允许选中 */
+.selectable,
+input,
+textarea,
+pre,
+code {
+  user-select: text;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ag-alias-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--ag-radius-sm);
+}
+
+/* 滚动条：细、低对比，不抢视线 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ag-alias-scrollbar);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--ag-radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ag-alias-scrollbar-hover);
+  background-clip: content-box;
+}
+
+/* 通用工具类：能用工具类就不写组件样式 */
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dim {
+  color: var(--ag-alias-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

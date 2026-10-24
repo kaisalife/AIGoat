@@ -1,0 +1,111 @@
+﻿/*
+ * 输入区。
+ *
+ * 弹层（TriggerPopup）绝对定位在 box 上方：它服务于"我正在打字"这件事，
+ * 遮住整个窗口反而让人失去上下文。
+ */
+
+.composer {
+  flex: none;
+  padding: var(--ag-space-2) var(--ag-space-5) var(--ag-space-4);
+  background: var(--ag-alias-bg-root);
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.blocked {
+  max-width: var(--ag-content-max);
+  margin: 0 auto var(--ag-space-2);
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-alias-warning-soft);
+  color: var(--ag-alias-warning);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.box {
+  position: relative;
+  max-width: var(--ag-content-max);
+  margin: 0 auto;
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  border-radius: var(--ag-radius-lg);
+  background: var(--ag-alias-bg-input);
+  transition: border-color var(--ag-dur-fast) var(--ag-ease);
+}
+
+.box:focus-within {
+  border-color: var(--ag-alias-accent-line);
+}
+
+.box[data-disabled] {
+  opacity: 0.6;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  min-height: var(--ag-composer-min-h);
+  max-height: 220px;
+  padding: var(--ag-space-3);
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  line-height: var(--ag-lh-base);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: 0 var(--ag-space-2) var(--ag-space-2);
+}
+
+.hint {
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+/* steer 的「追加指令」是**可点的按钮**，不是徽标 —— 它是那一轮唯一的发送入口 */
+.steerBtn {
+  height: 28px;
+  padding: 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-sm);
+  font-weight: 600;
+}
+
+.steerBtn:hover:not(:disabled) {
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-text-on-accent);
+}
+
+.steerBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.stop {
+  height: 28px;
+  padding: 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.send {
+  height: 28px;
+  padding: 0 var(--ag-space-3);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-text-on-accent);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.send:disabled {
+  opacity: 0.45;
+  cursor: default;
+}

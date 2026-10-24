@@ -1,0 +1,22 @@
+/*
+ * 左栏槽：会话列表。
+ *
+ * 原先这里上面还有一个文件树区（`.explorer`），文件树随 10 号板块搬去
+ * dock 的「文件」tab 之后那部分已删。
+ */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.threads {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}

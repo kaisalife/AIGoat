@@ -1,0 +1,64 @@
+/*
+ * 模态对话框：ConfirmDialog 的通用外壳 + WorkspaceDialog 的列表部分。
+ *
+ * 两者共用 .confirm__* 这套语义名，所以放一张表而不是各自分配。
+ * 另有一套 .confirm__panel--wide 给管理工作区这种宽内容用。
+ */
+
+/* ------------------------------ 确认对话框 ------------------------------ */
+
+.confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 实底遮罩，不要任何透明 */
+  background: var(--ag-alias-bg-overlay);
+}
+
+/* 叠在另一个对话框之上的确认框：同层级只靠 DOM 顺序决定谁压谁，太脆。 */
+.confirm--stacked {
+  z-index: 130;
+}
+
+.confirm__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-3);
+  width: min(420px, calc(100vw - 48px));
+  padding: var(--ag-space-4) var(--ag-space-5);
+  background: var(--ag-alias-bg-raised);
+  border: 1px solid var(--ag-alias-border-strong);
+  border-radius: var(--ag-radius-lg);
+}
+
+.confirm__panel--wide {
+  width: min(620px, calc(100vw - 48px));
+  max-height: calc(100vh - 96px);
+}
+
+.confirm__title {
+  margin: 0;
+  font-size: var(--ag-fs-content-lg);
+  line-height: var(--ag-lh-tight);
+}
+
+.confirm__body {
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-md);
+  line-height: var(--ag-lh-base);
+  overflow-y: auto;
+}
+
+.confirm__body p {
+  margin: 0;
+}
+
+.confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ag-space-2);
+}
+

@@ -1,0 +1,126 @@
+/*
+ * 终端 tab：实例切换条 + 新建行 + 实例本体。
+ */
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+/* "用户终端"必须显眼：它不受回合沙箱约束，混淆了会以为也在走审批 */
+.kind {
+  flex: none;
+  padding: 1px var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+  white-space: nowrap;
+}
+
+.strip {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.noInstances {
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  max-width: 140px;
+  height: 22px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid transparent;
+  color: var(--ag-alias-text-secondary);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.chip:hover {
+  background: var(--ag-alias-bg-overlay);
+}
+
+.chipOn {
+  background: var(--ag-alias-bg-raised);
+  border-color: var(--ag-alias-border);
+  color: var(--ag-alias-text-primary);
+}
+
+.launch {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: none;
+  padding: var(--ag-space-1) var(--ag-space-2);
+  border-bottom: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+.preset {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.preset:focus {
+  outline: none;
+  border-color: var(--ag-alias-accent);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ag-space-2);
+  flex: 1;
+  justify-content: center;
+  padding: var(--ag-space-5) var(--ag-space-4);
+  text-align: center;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.hint {
+  margin: 0;
+  max-width: 34em;
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+}
+
+.hint code {
+  font-family: var(--ag-font-mono);
+  padding: 1px 4px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-raised);
+}

@@ -1,0 +1,186 @@
+/*
+ * 三个只读资源 tab（技能 / MCP / 权限 / 上下文）的共用排版。
+ *
+ * 从 Panels.tsx 拆出时重写了一遍结构：原来是一堆 `.panel__row` 的裸 div，
+ * 现在统一成「节 + 行 + 徽标」，四个 tab 看起来是一套东西。
+ */
+
+.pane {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--ag-space-3);
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.section + .section {
+  margin-top: var(--ag-space-5);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ag-space-2);
+  margin-bottom: var(--ag-space-2);
+}
+
+.sectionHead h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  margin: 0;
+  font-size: var(--ag-fs-ui-md);
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+.count {
+  padding: 0 5px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--ag-radius-md);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: var(--ag-space-2) var(--ag-space-3);
+  font-size: var(--ag-fs-ui-sm);
+  color: var(--ag-alias-text-secondary);
+}
+
+.row + .row {
+  border-top: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+}
+
+/* 不可用 / 停用：置灰而不是隐藏——隐藏会让人以为功能不存在 */
+.off {
+  color: var(--ag-alias-text-muted);
+}
+
+.name {
+  flex: none;
+  max-width: 14em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ag-alias-text-primary);
+}
+
+.codeName {
+  flex: none;
+  max-width: 14em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-primary);
+}
+
+.desc {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.meta {
+  flex: none;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ok {
+  color: var(--ag-alias-success);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.empty {
+  margin: 0;
+  padding: var(--ag-space-3);
+  border: var(--ag-hairline) dashed var(--ag-alias-border);
+  border-radius: var(--ag-radius-md);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.hint {
+  margin: var(--ag-space-1) 0 0;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+}
+
+.warn {
+  margin: var(--ag-space-2) 0 0;
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+}
+
+/* 上下文余量条 */
+.meter {
+  height: 4px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-raised);
+  overflow: hidden;
+}
+
+.meterFill {
+  height: 100%;
+  background: var(--ag-alias-info);
+  transition: width var(--ag-dur-slow) var(--ag-ease);
+}
+
+/* 超过 85% 换语义色：快满了和满了不是一回事 */
+.meterWarn {
+  background: var(--ag-alias-warning);
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--ag-space-1) var(--ag-space-3);
+  margin: var(--ag-space-3) 0 0;
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.k {
+  color: var(--ag-alias-text-muted);
+}
+
+.v {
+  margin: 0;
+  color: var(--ag-alias-text-primary);
+  font-variant-numeric: tabular-nums;
+}

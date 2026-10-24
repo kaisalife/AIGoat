@@ -1,0 +1,201 @@
+/*
+ * 会话列表：新建入口 + 搜索 + 置顶区 + 时间分组 + 归档区。
+ *
+ * 三层「上面」要分清：
+ * - 置顶区（用户手动，固定在最上，不参与时间排序）
+ * - 时间分组（进行中 / 今天 / 更早）
+ * - 归档区（折叠在最后）
+ * 它们的先后是刻意的：置顶是用户的决定，压过一切机器推断。
+ */
+
+.actions {
+  padding: var(--ag-space-2) var(--ag-space-2) var(--ag-space-1);
+}
+
+.newBtn {
+  width: 100%;
+  height: 30px;
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-accent-line);
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-sm);
+  font-weight: 600;
+}
+
+.newBtn:hover:not(:disabled) {
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-text-on-accent);
+}
+
+.newBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ---------------------------------------------- 搜索 */
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  padding: 0 var(--ag-space-2) var(--ag-space-1);
+}
+
+.search {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--ag-alias-accent);
+}
+
+/* 防抖期间给个提示：否则用户会以为搜索没生效 */
+.searching {
+  flex: none;
+  color: var(--ag-alias-text-muted);
+  font-size: 10px;
+}
+
+/* ---------------------------------------------- 置顶 */
+
+.pinned {
+  padding: 0 var(--ag-space-2) var(--ag-space-1);
+}
+
+.pinnedHead {
+  margin: 0 0 2px;
+  padding-left: var(--ag-space-1);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ag-alias-text-muted);
+  letter-spacing: 0.03em;
+}
+
+.pinnedItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pinnedItem :global(.threaditem) {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 未置顶时隐藏，hover 整行才显出来——七行列表不该常年挂着一列 ★ */
+.unpin {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-accent);
+  font-size: 11px;
+  opacity: 0;
+}
+
+.pinnedItem:hover .unpin {
+  opacity: 0.7;
+}
+
+.unpin:hover {
+  opacity: 1;
+}
+
+/* ---------------------------------------------- 拖拽 */
+
+.dragItem {
+  cursor: grab;
+}
+
+.dragging {
+  opacity: 0.4;
+}
+
+/* ---------------------------------------------- 分组 */
+
+.section {
+  padding: 0 var(--ag-space-2);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ag-space-1) var(--ag-space-1) 2px;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.sectionOps {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+}
+
+.linkBtn {
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.linkBtn:hover {
+  text-decoration: underline;
+}
+
+.on {
+  color: var(--ag-alias-accent);
+  font-weight: 600;
+}
+
+.group {
+  margin-bottom: var(--ag-space-1);
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-1);
+  margin: 0;
+  padding: 2px var(--ag-space-1);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ag-alias-text-muted);
+}
+
+.groupHeadBtn {
+  width: 100%;
+  cursor: pointer;
+}
+
+.groupHeadBtn:hover {
+  color: var(--ag-alias-text-secondary);
+}
+
+.caret {
+  transition: transform var(--ag-dur-fast) var(--ag-ease);
+}
+
+.caretOpen {
+  transform: rotate(90deg);
+}
+
+.emptyHint {
+  margin: 0;
+  padding: var(--ag-space-2);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  line-height: var(--ag-lh-base);
+}

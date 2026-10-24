@@ -1,0 +1,124 @@
+/*
+ * `/model` 选择器。
+ *
+ * 分组头 sticky：模型一多就要滚动，没有 sticky 头会不知道自己在看哪家。
+ */
+
+.search {
+  width: 100%;
+  height: 30px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  background: var(--ag-alias-bg-input);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+  margin-bottom: var(--ag-space-3);
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--ag-alias-accent);
+}
+
+.group + .group {
+  margin-top: var(--ag-space-3);
+}
+
+.head {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--ag-space-2);
+  margin: 0 0 var(--ag-space-1);
+  padding: 2px 0;
+  background: var(--ag-alias-bg-overlay);
+  font-size: var(--ag-fs-ui-xs);
+}
+
+.groupName {
+  font-weight: 600;
+  color: var(--ag-alias-text-primary);
+}
+
+/* 域名缩写：两个同名网关靠它区分 */
+.host {
+  color: var(--ag-alias-text-muted);
+  font-family: var(--ag-font-mono);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  width: 100%;
+  min-height: 30px;
+  padding: 0 var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  color: var(--ag-alias-text-primary);
+  font-size: var(--ag-fs-ui-sm);
+  text-align: left;
+}
+
+.row:hover {
+  background: var(--ag-alias-bg-raised);
+}
+
+.active {
+  background: var(--ag-alias-accent-soft);
+  color: var(--ag-alias-accent);
+  font-weight: 600;
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.badge {
+  flex: none;
+  padding: 0 5px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.id {
+  flex: none;
+  max-width: 14em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.empty {
+  margin: var(--ag-space-4) 0;
+  text-align: center;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.manage {
+  padding: 0 var(--ag-space-3);
+  height: 30px;
+  border-radius: var(--ag-radius-sm);
+  border: var(--ag-hairline) solid var(--ag-alias-border);
+  color: var(--ag-alias-accent);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.manage:hover {
+  background: var(--ag-alias-bg-raised);
+}

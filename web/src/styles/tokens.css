@@ -1,0 +1,89 @@
+/*
+ * token 语义层：`--ag-alias-*`。特性包/组件样式**只准消费这一层**，
+ * 禁字面颜色（`#rgb` / `rgb(`）。改主题只动基础层 tokens.base.css。
+ *
+ * 分组对应 dsh 的 --dsw-alias-*（只搬结构，不搬名字）：
+ * 表面 / 文本 / 强调 / 状态 / 描边 / 焦点 / 代码 / diff / 滚动条。
+ * 颜色全部由基础层的色板推导，因此这里没有字面量。
+ */
+
+:root {
+  /* ---------- 表面 ---------- */
+  --ag-alias-bg-root: var(--ag-neutral-1);
+  --ag-alias-bg-surface: var(--ag-neutral-2);
+  --ag-alias-bg-raised: var(--ag-neutral-4);
+  --ag-alias-bg-overlay: var(--ag-neutral-5);
+  --ag-alias-bg-input: var(--ag-neutral-3);
+  /* 半透明浮层底：菜单、气泡、拖拽预览统一用它拿 blur 材质 */
+  --ag-alias-bg-translucent: rgba(20, 16, 12, 0.72);
+  /* 代码/终端底比输入底再沉一点，长时间读 diff 不晃眼 */
+  --ag-alias-code-bg: var(--ag-neutral-0);
+
+  /* ---------- 文本 ---------- */
+  --ag-alias-text-primary: var(--ag-neutral-11);
+  --ag-alias-text-secondary: var(--ag-neutral-9);
+  --ag-alias-text-muted: var(--ag-neutral-8);
+  --ag-alias-text-inverse: var(--ag-neutral-0);
+  /* 叠在强调色上的文字（主按钮），两种主题下都要够对比 */
+  --ag-alias-text-on-accent: var(--ag-neutral-0);
+
+  /* ---------- 强调 ---------- */
+  --ag-alias-accent: var(--ag-accent);
+  --ag-alias-accent-hover: var(--ag-accent-strong);
+  --ag-alias-accent-soft: var(--ag-accent-soft);
+  --ag-alias-accent-line: var(--ag-accent-line);
+
+  /* ---------- 状态 ---------- */
+  --ag-alias-success: var(--ag-success);
+  --ag-alias-success-hover: var(--ag-success-strong);
+  --ag-alias-success-soft: var(--ag-success-soft);
+  --ag-alias-success-line: var(--ag-success-line);
+
+  --ag-alias-warning: var(--ag-warning);
+  --ag-alias-warning-hover: var(--ag-warning-strong);
+  --ag-alias-warning-soft: var(--ag-warning-soft);
+  --ag-alias-warning-line: var(--ag-warning-line);
+
+  --ag-alias-danger: var(--ag-danger);
+  --ag-alias-danger-hover: var(--ag-danger-strong);
+  --ag-alias-danger-soft: var(--ag-danger-soft);
+  --ag-alias-danger-line: var(--ag-danger-line);
+
+  --ag-alias-info: var(--ag-info);
+  --ag-alias-info-hover: var(--ag-info-strong);
+  --ag-alias-info-soft: var(--ag-info-soft);
+  --ag-alias-info-line: var(--ag-info-line);
+
+  /* ---------- 描边 ---------- */
+  --ag-alias-border-subtle: var(--ag-neutral-3);
+  --ag-alias-border: var(--ag-neutral-5);
+  --ag-alias-border-strong: var(--ag-neutral-6);
+  /* 虚线描边：拖拽把手、占位框 */
+  --ag-alias-border-dashed: var(--ag-neutral-6);
+
+  /* ---------- 焦点 ---------- */
+  --ag-alias-focus-ring: var(--ag-accent);
+  --ag-alias-focus-offset: var(--ag-neutral-1);
+
+  /* ---------- diff ---------- */
+  --ag-alias-diff-add: var(--ag-success);
+  --ag-alias-diff-add-soft: var(--ag-success-soft);
+  --ag-alias-diff-del: var(--ag-danger);
+  --ag-alias-diff-del-soft: var(--ag-danger-soft);
+
+  /* ---------- 滚动条 ---------- */
+  --ag-alias-scrollbar: var(--ag-neutral-5);
+  --ag-alias-scrollbar-hover: var(--ag-neutral-6);
+}
+
+/* 亮色下叠在强调色上的文字要用中性色最深两阶以外的极浅色，否则主按钮看不清。 */
+[data-theme='light'] {
+  --ag-alias-bg-translucent: rgba(251, 247, 241, 0.78);
+  --ag-alias-text-on-accent: #fffdfa;
+}
+
+/* 运行中的流光遮罩（TextShimmer 用）：强调色降到几乎透明。 */
+:root {
+  --ag-alias-shimmer-base: var(--ag-neutral-8);
+  --ag-alias-shimmer-tip: var(--ag-neutral-11);
+}

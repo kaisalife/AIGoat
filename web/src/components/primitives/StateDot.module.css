@@ -1,0 +1,70 @@
+.dot {
+  --ag-dot-size: 8px;
+  display: inline-block;
+  flex: none;
+  width: var(--ag-dot-size);
+  height: var(--ag-dot-size);
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-text-muted);
+  position: relative;
+}
+
+/* 光晕用 ::after 画：多一层元素不占布局，也不会挤掉相邻文字 */
+.busy::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 1px solid currentColor;
+  opacity: 0.5;
+  animation: ag-pulse 1.6s var(--ag-ease) infinite;
+}
+
+@keyframes ag-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .busy::after {
+    animation: none;
+    opacity: 0.45;
+    transform: scale(1.2);
+  }
+}
+
+.neutral {
+  background: var(--ag-alias-text-muted);
+}
+
+.accent {
+  background: var(--ag-alias-accent);
+  color: var(--ag-alias-accent);
+}
+
+.success {
+  background: var(--ag-alias-success);
+  color: var(--ag-alias-success);
+}
+
+.warning {
+  background: var(--ag-alias-warning);
+  color: var(--ag-alias-warning);
+}
+
+.danger {
+  background: var(--ag-alias-danger);
+  color: var(--ag-alias-danger);
+}
+
+.info {
+  background: var(--ag-alias-info);
+  color: var(--ag-alias-info);
+}

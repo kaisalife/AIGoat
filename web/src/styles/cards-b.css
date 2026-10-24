@@ -1,0 +1,160 @@
+/*
+ * 工具卡的壳与各卡的正文区（05）。
+ *
+ * 共用 `.cardshell__*` 是刻意的：一张卡只写"摘要算什么"和"正文是什么"，
+ * 状态点、折叠、耗时、退出码都在壳里做一次。分成各自一套的代价是
+ * 迟早出现三种失败样式。
+ */
+
+.cardshell__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  min-width: 0;
+  width: 100%;
+}
+
+.cardshell__summary--running {
+  min-width: 120px;
+}
+
+.cardshell__badge {
+  flex: none;
+  padding: 0 5px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-xs);
+  white-space: nowrap;
+}
+
+.cardshell__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.cardshell__meta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__status {
+  white-space: nowrap;
+}
+
+.card__status--bad {
+  color: var(--ag-alias-danger);
+}
+
+/* 非零退出码要用语义色标出来：exit 0 和 exit 1 在灰字里长得一样 */
+.card__exit {
+  padding: 0 4px;
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-bg-overlay);
+  color: var(--ag-alias-text-muted);
+}
+
+.card__exit--bad {
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+}
+
+.card__empty {
+  padding: var(--ag-space-2) 0;
+  color: var(--ag-alias-text-muted);
+  font-size: var(--ag-fs-ui-sm);
+}
+
+.card__error {
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-danger-soft);
+  color: var(--ag-alias-danger);
+  font-size: var(--ag-fs-ui-sm);
+  line-height: var(--ag-lh-base);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.card__input {
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-code-bg);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-content-sm);
+  line-height: var(--ag-lh-base);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.card__json {
+  margin: 0;
+  padding: var(--ag-space-2);
+  border-radius: var(--ag-radius-sm);
+  background: var(--ag-alias-code-bg);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-content-sm);
+  line-height: var(--ag-lh-base);
+  overflow: auto;
+  max-height: 320px;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.card__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-2);
+}
+
+/* 子代理徽章：可点击跳线程，所以保留按钮形态而不是纯 Pill */
+.subagent--pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ag-space-2);
+  padding: 2px var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-raised);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-secondary);
+}
+
+.subagent--pill:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.subagent__id {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+  max-width: 180px;
+}
+/* 子代理徽标：这条命令是派给某个已登记子代理跑的（09 号板块）。
+   它要回答的是「这活儿不在主线程上」——没这个标记时，用户只能靠
+   命令时长猜。 */
+.subBadge {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 var(--ag-space-2);
+  padding: 1px var(--ag-space-2);
+  border-radius: var(--ag-radius-pill);
+  border: var(--ag-hairline) solid var(--ag-alias-info-line);
+  background: var(--ag-alias-info-soft);
+  color: var(--ag-alias-info);
+  font-size: var(--ag-fs-ui-xs);
+  align-self: flex-start;
+}

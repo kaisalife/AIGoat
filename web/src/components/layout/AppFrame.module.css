@@ -1,0 +1,63 @@
+/*
+ * 三栏骨架。
+ *
+ * 网格列宽由 columns.ts 一次算出，这里只负责摆位与拖拽把手——
+ * 布局规则的唯一实现在 columns.ts，避免「拖拽算一套、缩放算另一套」。
+ */
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  background: var(--ag-alias-bg-root);
+  color: var(--ag-alias-text-primary);
+  overflow: hidden;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  min-height: 0;
+  min-width: 0;
+}
+
+.left {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--ag-alias-bg-surface);
+  border-right: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  overflow: hidden;
+}
+
+.leftCollapsed {
+  align-items: center;
+  padding: var(--ag-space-2) 0;
+  gap: var(--ag-space-1);
+}
+
+.center {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/*
+ * 右栏是 track：只占宽度，让中栏让位。
+ * 面板自己绝对定位贴右缘，所以面板全屏/展开时不会反过来挤压消息流。
+ */
+.rightTrack {
+  position: relative;
+  flex: none;
+  min-height: 0;
+  border-left: var(--ag-hairline) solid var(--ag-alias-border-subtle);
+  background: var(--ag-alias-bg-surface);
+  overflow: hidden;
+}

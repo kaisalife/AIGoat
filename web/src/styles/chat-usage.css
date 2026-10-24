@@ -1,0 +1,87 @@
+/*
+ * 回合 token 用量条。
+ *
+ * cached 单列并标出来：它决定下一轮的实际增量花费。只显示 total 的话，
+ * 用户看到 12k 会以为每轮都要花 12k，而实际上大部分命中了缓存。
+ */
+
+/* ---------------------------------------------- 用量 */
+
+.usage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ag-space-1);
+  padding: var(--ag-space-2) var(--ag-space-2) 0;
+}
+
+.usage__bar {
+  display: flex;
+  height: 3px;
+  border-radius: var(--ag-radius-pill);
+  background: var(--ag-alias-bg-raised);
+  overflow: hidden;
+}
+
+.usage__seg {
+  height: 100%;
+}
+
+.usage__seg--cached {
+  background: var(--ag-alias-success);
+}
+
+.usage__seg--input {
+  background: var(--ag-alias-info);
+}
+
+.usage__seg--output {
+  background: var(--ag-alias-accent);
+}
+
+.usage__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--ag-space-3);
+  flex-wrap: wrap;
+  font-size: var(--ag-fs-ui-xs);
+  color: var(--ag-alias-text-muted);
+}
+
+.usage__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.usage__item--muted {
+  color: var(--ag-alias-text-muted);
+  opacity: 0.75;
+}
+
+.usage__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--ag-radius-pill);
+}
+
+.usage__dot--cached {
+  background: var(--ag-alias-success);
+}
+
+.usage__dot--input {
+  background: var(--ag-alias-info);
+}
+
+.usage__dot--output {
+  background: var(--ag-alias-accent);
+}
+
+.usage__spacer {
+  flex: 1;
+}
+
+.usage__total {
+  color: var(--ag-alias-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
