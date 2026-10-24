@@ -53,7 +53,9 @@ Push-Location $nsisDir
 $code = $LASTEXITCODE
 Pop-Location
 if ($code -ne 0) { throw "makensis 编译失败" }
-$setup = Join-Path $root "src-tauri\target\release\bundle\nsis\AIGoat_0.1.0_x64-setup.exe"
+# setup 文件名随 tauri.conf.json 的 version 走，不写死。
+$conf = Get-Content (Join-Path $root "src-tauri\tauri.conf.json") -Raw | ConvertFrom-Json
+$setup = Join-Path $root "src-tauri\target\release\bundle\nsis\$($conf.productName)_$($conf.version)_x64-setup.exe"
 Copy-Item (Join-Path $nsisDir "nsis-output.exe") $setup -Force
 
 # ④ 自检：安装包存在且体积合理（含压缩后的 codex.exe，应远大于 aigoat.exe 本身）。
