@@ -24,6 +24,11 @@ import re
 import sys
 from pathlib import Path
 
+# CI runner 的控制台编码是 cp1252，print 中文会 UnicodeEncodeError；统一钉成 UTF-8。
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
 # `export type Name = { ... }` 里的字段：`name: Type,` 或 `name?: Type,`
 # 需要跳过交叉类型（`... & { ... }`）里的重复字段，故这里只取首个花括号块。
 TS_TYPE = re.compile(
