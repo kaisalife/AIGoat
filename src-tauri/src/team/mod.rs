@@ -1,5 +1,5 @@
-//! 「团队制作」（team-builder）与「外部员工创建」（external-employee-create）：
-//! 默认技能 + CLI 子命令。
+//! 人与团队的增删改查技能（`create/update/delete/list-{per,team}`）与
+//! 「外部员工创建」（external-employee-create）：默认技能 + CLI 子命令。
 //!
 //! 让 codex 主 agent 自主维护子代理注册表（增删改成员、调团队工作流）、
 //! 并把外部开源 agent 包成符合 AF 任务单协议的 external 成员：

@@ -39,7 +39,7 @@ export function TriggerPopup(props: TriggerPopupProps) {
   const maxHeight = useAnchoredMaxHeight(popupRef, 260, signal, 64)
 
   return (
-    <div ref={popupRef} className={s.popup} role="listbox" aria-label="命令与文件" style={{ maxHeight }}>
+    <div ref={popupRef} className={s.popup} role="listbox" aria-label="命令与候选" style={{ maxHeight }}>
       {sections.length === 0 && (
         <p className={s.empty}>
           没有匹配项

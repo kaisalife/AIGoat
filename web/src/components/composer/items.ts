@@ -28,6 +28,43 @@ export interface TeamCandidate {
   hint: string
 }
 
+/** 人员候选的最小形状：注册表里的原初成员（副本不算"人"）。 */
+export interface MemberCandidate {
+  name: string
+  /** 一行提示：职责（desc），没有就列技能。 */
+  hint: string
+}
+
+/** 选择器命令：命令名不是"执行"，而是"把候选摆出来"。 */
+const PICKER_COMMANDS = ['skill', 'file', 'team', 'per'] as const
+export type PickerCommand = (typeof PICKER_COMMANDS)[number]
+
+/** 该命令是不是选择器（`/skill` `/file` `/team` `/per`）。 */
+export function isPickerCommand(id: string): id is PickerCommand {
+  return (PICKER_COMMANDS as readonly string[]).includes(id)
+}
+
+/**
+ * 选择器命令的过滤词。
+ *
+ * `/skill` = 列出全部技能，`/skill team` = 用 `team` 过滤；`/file`、`/team`、
+ * `/per` 同理。用户不需要先记住名字——这是这些命令存在的全部意义。
+ *
+ * 只有「命令名 + 空格」才算过滤，所以 `/permission` 不会被 `/per` 吃掉。
+ */
+export function pickerQuery(
+  query: string,
+): { kind: PickerCommand; query: string } | null {
+  const q = normalizeCommand(query)
+  for (const kind of PICKER_COMMANDS) {
+    if (q === kind) return { kind, query: '' }
+    if (q.startsWith(`${kind} `)) {
+      return { kind, query: q.slice(kind.length + 1).trim() }
+    }
+  }
+  return null
+}
+
 /**
  * 命令候选（按分组）。
  *
@@ -82,7 +119,7 @@ export function skillItems(query: string, skills: SkillCandidate[]): PopupItem[]
  * 团队候选：注册表里的编组，`@` 弹层里跟文件一起出现。
  *
  * 选中插 `@团队名 `：对用户是「我点名了这支团队」，对 codex 是个明确的
- * 协作信号（team-builder 技能的 SKILL.md 解释了这个记号）。量级小，
+ * 协作信号（注入的派单说明解释了这个记号）。量级小，
  * 用路径子串同款的 includes 匹配即可，不值得上 rankByName。
  */
 export function teamItems(query: string, teams: TeamCandidate[]): PopupItem[] {
@@ -90,6 +127,25 @@ export function teamItems(query: string, teams: TeamCandidate[]): PopupItem[] {
   return teams
     .filter((t) => !q || t.name.toLowerCase().includes(q))
     .map((t) => ({ kind: 'team' as const, id: t.name, label: t.name, hint: t.hint, group: '团队' }))
+}
+
+/**
+ * 人员候选：注册表里的原初成员，`/per` 弹层用。
+ *
+ * 选中插 `@人名 `——与团队同一个点名记号，含义是"用 TA 的能力"（团队用
+ * `@团队名 ` 表示整队协作）。职责也参与匹配：`/per 评审` 能找到 reviewer。
+ */
+export function memberItems(query: string, members: MemberCandidate[]): PopupItem[] {
+  const q = query.trim().toLowerCase()
+  return members
+    .filter((m) => !q || m.name.toLowerCase().includes(q) || m.hint.toLowerCase().includes(q))
+    .map((m) => ({
+      kind: 'member' as const,
+      id: m.name,
+      label: m.name,
+      hint: m.hint,
+      group: '人员',
+    }))
 }
 
 /**

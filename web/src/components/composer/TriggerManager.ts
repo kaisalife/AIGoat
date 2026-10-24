@@ -16,17 +16,21 @@
 import {
   commandItems,
   fileItems,
+  isPickerCommand,
+  memberItems,
+  pickerQuery,
   skillItems,
   teamItems,
   type FileNode,
+  type MemberCandidate,
   type SkillCandidate,
   type TeamCandidate,
 } from './items'
 
-export type { FileNode, SkillCandidate, TeamCandidate } from './items'
+export type { FileNode, MemberCandidate, SkillCandidate, TeamCandidate } from './items'
 
-/** 触发符种类。`@` 与 `/` 的弹层内容不同，但状态机相同；技能随 `/`、团队随 `@`。 */
-export type TriggerKind = 'command' | 'file' | 'skill' | 'team'
+/** 触发符种类。`@` 与 `/` 的弹层内容不同，但状态机相同；技能随 `/`、团队与人员随 `@`。 */
+export type TriggerKind = 'command' | 'file' | 'skill' | 'team' | 'member'
 
 export type TriggerState =
   | { phase: 'idle' }
@@ -59,6 +63,7 @@ export interface TriggerMachine {
     files: FileNode[],
     skills: SkillCandidate[],
     teams: TeamCandidate[],
+    members?: MemberCandidate[],
   ) => TriggerState | null
   reset: () => void
 }
@@ -73,16 +78,30 @@ export function itemsFor(
   files: FileNode[],
   skills: SkillCandidate[],
   teams: TeamCandidate[],
+  members: MemberCandidate[] = [],
 ): PopupItem[] {
   if (state.phase === 'trigger') {
-    if (state.kind === 'command') return [...commandItems(state.query), ...skillItems(state.query, skills)]
+    if (state.kind === 'command') {
+      // `/skill`、`/file`、`/team`、`/per` 是选择器：命令名之后的部分当过滤词，
+      // 直接把候选摆出来（Tab 一步选中），而不是让用户先记住名字再手敲。
+      const picker = pickerQuery(state.query)
+      if (picker?.kind === 'skill') return skillItems(picker.query, skills)
+      if (picker?.kind === 'file') return fileItems(picker.query, files)
+      if (picker?.kind === 'team') return teamItems(picker.query, teams)
+      if (picker?.kind === 'per') return memberItems(picker.query, members)
+      // 技能排在命令前面：`/` 弹层高度有限，技能被命令挤到可视区外就等于
+      // 不存在。命令用前缀筛选即可，技能更需要"先看到有什么"。
+      return [...skillItems(state.query, skills), ...commandItems(state.query)]
+    }
     if (state.kind === 'team') return teamItems(state.query, teams)
+    if (state.kind === 'member') return memberItems(state.query, members)
     if (state.kind === 'file') return [...fileItems(state.query, files), ...teamItems(state.query, teams)]
     return skillItems(state.query, skills)
   }
   if (state.phase === 'selected') {
-    if (state.kind === 'command') return [...commandItems(''), ...skillItems('', skills)]
+    if (state.kind === 'command') return [...skillItems('', skills), ...commandItems('')]
     if (state.kind === 'team') return teamItems('', teams)
+    if (state.kind === 'member') return memberItems('', members)
     if (state.kind === 'file') return [...fileItems('', files), ...teamItems('', teams)]
     return skillItems('', skills)
   }
@@ -120,7 +139,7 @@ export function createTriggerMachine(): TriggerMachine {
     },
     reset,
 
-    handle(key, text, caret, files, skills, teams) {
+    handle(key, text, caret, files, skills, teams, members = []) {
       // onKeyDown 在字符插入**之前**触发，所以先把这个键的效果算进文本，
       // 再去找触发符——否则查询串永远停在 ''，弹层不会随打字收窄。
       let nextText = text
@@ -149,7 +168,7 @@ export function createTriggerMachine(): TriggerMachine {
 
       // 打开 / 更新 trigger 态：query 会跟着打字实时变化。
       state = { phase: 'trigger', kind: span.kind, query: span.query }
-      items = itemsFor(state, files, skills, teams)
+      items = itemsFor(state, files, skills, teams, members)
       if (cursor >= items.length) cursor = 0
 
       // ↑↓ 移动、Enter/Tab 选中：这些键要弹层自己消费（不能落进输入框）。
@@ -166,7 +185,7 @@ export function createTriggerMachine(): TriggerMachine {
         if (!item) return state // 没有候选：留在弹层，不提交
         state = { phase: 'selected', kind: item.kind, item }
         cursor = 0
-        items = itemsFor(state, files, skills, teams)
+        items = itemsFor(state, files, skills, teams, members)
         return state
       }
       // 可打印字符 / 退格：状态已更新，但按键要交给 composer 落文本。
@@ -226,16 +245,21 @@ export function applySelection(
 ): { text: string; caret: number } {
   // 技能插成 `$name `：codex 原生把消息里的 `$SkillName` 识别为技能 mention
   // 并注入 SKILL.md——用命令的 `/` 或文件的 `[]` 都不会触发。
-  // 团队插成 `@name `：对用户是点名编组，记号含义由 team-builder 的
-  // SKILL.md 向 codex 解释（团队没有 codex 原生语法）。
-  const replacement =
-    item.kind === 'command'
-      ? `/${item.id} `
-      : item.kind === 'skill'
-        ? `$${item.id} `
-        : item.kind === 'team'
-          ? `@${item.id} `
-          : `[${item.label}] `
+  // 团队插成 `@name `：对用户是点名编组，记号含义由注入的派单说明向 codex
+  // 解释（团队没有 codex 原生语法）。
+  // 选择器命令（`/skill` `/file`）**不插尾随空格**：触发段留在输入框里，
+  // Composer 会立刻重开弹层把候选接上，用户不必再敲一次 `/`。
+  let replacement: string
+  if (item.kind === 'command') {
+    replacement = isPickerCommand(item.id) ? `/${item.id}` : `/${item.id} `
+  } else if (item.kind === 'skill') {
+    replacement = `$${item.id} `
+  } else if (item.kind === 'team' || item.kind === 'member') {
+    // 团队 = 整队协作，人员 = 用 TA 的能力；同一个点名记号。
+    replacement = `@${item.id} `
+  } else {
+    replacement = `[${item.label}] `
+  }
   const start = span?.start ?? text.length
   // 触发段 = 触发符(1 个字符) + 查询串，它的结束位置正好是光标处。
   // **必须保留**这段之后的文本：光标后面还有字时（在句子中间敲 `/` 或 `@`），

@@ -1,4 +1,7 @@
-//! 默认技能的安装（`team-builder` / `external-employee-create`）。
+//! 默认技能的安装：人与团队的增删改查（8 个）+ 外部员工创建。
+//!
+//! 技能按「动作-对象」命名（`create-per`、`update-team`…）：codex 按用户
+//! 意图挑一个技能加载，单个 SKILL.md 只讲一件事，比一个巨型技能更容易命中。
 //!
 //! codex 的技能发现根是 `<CODEX_HOME>/skills/`（每个技能一个目录，内含
 //! `SKILL.md`）。`.system` 子目录是 codex 内置技能区，每次启动都会被
@@ -14,19 +17,44 @@
 use crate::cache;
 
 /// 技能清单：目录名 → 模板。`{{AIGOAT_EXE}}` 由 [`install_all`] 替换。
-///
-/// `team-builder` 用早期单技能布局（`assets/SKILL.md`），保留原位不搬——
-/// 搬动只会让历史路径失效，没有收益。
 const SKILLS: &[(&str, &str)] = &[
-    ("team-builder", include_str!("assets/SKILL.md")),
+    (
+        "create-per",
+        include_str!("assets/skills/create-per/SKILL.md"),
+    ),
+    (
+        "update-per",
+        include_str!("assets/skills/update-per/SKILL.md"),
+    ),
+    (
+        "delete-per",
+        include_str!("assets/skills/delete-per/SKILL.md"),
+    ),
+    ("list-per", include_str!("assets/skills/list-per/SKILL.md")),
+    (
+        "create-team",
+        include_str!("assets/skills/create-team/SKILL.md"),
+    ),
+    (
+        "update-team",
+        include_str!("assets/skills/update-team/SKILL.md"),
+    ),
+    (
+        "delete-team",
+        include_str!("assets/skills/delete-team/SKILL.md"),
+    ),
+    (
+        "list-team",
+        include_str!("assets/skills/list-team/SKILL.md"),
+    ),
     (
         "external-employee-create",
         include_str!("assets/skills/external-employee-create/SKILL.md"),
     ),
 ];
 
-/// 历史托管名：改名后清掉旧目录，避免 codex 里同时出现新旧两个技能。
-const RETIRED: &[&str] = &["agent-importer"];
+/// 历史托管名：改名后清掉旧目录，避免 codex 里同时出现新旧两套技能。
+const RETIRED: &[&str] = &["team-builder", "agent-importer"];
 
 /// 启动时调用（GUI 与 CLI 模式都无害）。失败只打日志：技能装不上最多
 /// 让 codex 少一个技能，不该拦着应用起来。

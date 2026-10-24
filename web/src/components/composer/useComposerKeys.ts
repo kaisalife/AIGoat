@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import type { FileNode, SkillCandidate, TeamCandidate } from './TriggerManager'
+import type { FileNode, MemberCandidate, SkillCandidate, TeamCandidate } from './TriggerManager'
 import { observeComposition } from '../primitives/keyboardComposition'
 
 export interface ComposerKeysOptions {
@@ -9,13 +9,15 @@ export interface ComposerKeysOptions {
    * 返回类型宽成 `unknown`：这里只做 `!== null` 的二值判断，具体返回什么
    * 由状态机自己定义，跟着它改类型只会让本文件跟着抖。
    */
-  handle: (key: string, text: string, caret: number, files: FileNode[], skills: SkillCandidate[], teams: TeamCandidate[]) => unknown
+  handle: (key: string, text: string, caret: number, files: FileNode[], skills: SkillCandidate[], teams: TeamCandidate[], members: MemberCandidate[]) => unknown
   text: string
   files: FileNode[]
   /** codex 技能清单：`/` 弹层的「技能」分组候选。 */
   skills: SkillCandidate[]
-  /** 注册表团队清单：`@` 弹层的「团队」分组候选。 */
+  /** 注册表团队清单：`@` 与 `/team` 弹层的「团队」分组候选。 */
   teams: TeamCandidate[]
+  /** 注册表人员清单：`/per` 弹层的「人员」分组候选（原初成员）。 */
+  members: MemberCandidate[]
   /** `Enter` 发送 还是 `Ctrl+Enter` 发送（设置中心「通用」域，08 §3.4）。 */
   enterSends: boolean
   onSubmit: () => void
@@ -37,7 +39,7 @@ export interface ComposerKeysOptions {
   * 否则确认候选词的回车会把打了一半的消息发出去。
   */
 export function useComposerKeys(o: ComposerKeysOptions) {
-  const { handle, text, files, skills, teams, enterSends, onSubmit, onTriggerHandled } = o
+  const { handle, text, files, skills, teams, members, enterSends, onSubmit, onTriggerHandled } = o
 
   const compositionRef = useRef<ReturnType<typeof observeComposition> | null>(null)
   useEffect(() => {
@@ -57,7 +59,7 @@ export function useComposerKeys(o: ComposerKeysOptions) {
         e.nativeEvent.isComposing || (compositionRef.current?.guards(e.nativeEvent) ?? false)
       if (composing) return
 
-      const next = handle(e.key, text, e.currentTarget.selectionStart, files, skills, teams)
+      const next = handle(e.key, text, e.currentTarget.selectionStart, files, skills, teams, members)
       if (next !== null) {
         e.preventDefault()
         onTriggerHandled()
@@ -72,6 +74,6 @@ export function useComposerKeys(o: ComposerKeysOptions) {
         onSubmit()
       }
     },
-    [handle, text, files, skills, teams, enterSends, onSubmit, onTriggerHandled],
+    [handle, text, files, skills, teams, members, enterSends, onSubmit, onTriggerHandled],
   )
 }

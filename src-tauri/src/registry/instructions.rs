@@ -40,6 +40,7 @@ pub fn build_instructions() -> Option<String> {
     let mut out = String::new();
     out.push_str("## 子 Agent 派单（AF 规范）\n\n");
     push_team_overview(&mut out, &list);
+    push_mentions(&mut out);
     push_collaboration_protocol(&mut out);
     if !native.is_empty() {
         push_native_section(&mut out, &native);
@@ -87,6 +88,20 @@ fn push_team_overview(out: &mut String, list: &[SubAgentRow]) {
         }
     }
     out.push('\n');
+}
+
+/// 消息里的点名记号。
+///
+/// 这两个记号由 AIGoat 输入框（`@` 弹层、`/team`、`/per`）插入，**不是文件名**。
+/// 写在常驻说明里而不是技能里：技能按需加载，等它被加载时可能已经错过这条消息。
+fn push_mentions(out: &mut String) {
+    out.push_str("### 消息里的点名记号\n\n");
+    out.push_str(
+        "- `@团队名`：点名整队协作——按该团队的工作流分派给团队成员。\n\
+         - `@成员名`：用这位成员的能力处理这条消息（codex 原生成员用 `spawn_agent` \
+         派给 TA；外部成员按任务单协议调用 TA 的 exe）。\n\
+         - 两者都是输入框插入的记号，不是文件路径；与成员重名时以注入的成员清单为准。\n\n",
+    );
 }
 
 /// 通用协作规程（参考 MetaGPT / GameGPT 的 SOP 思路）：把"成员清单"变成

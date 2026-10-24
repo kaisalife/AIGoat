@@ -11,6 +11,7 @@ import { PlanChip, planPhaseOf } from '../plan/PlanChip'
 import { DropOverlay } from '../attachment/DropOverlay'
 import { PlusMenu } from './PlusMenu'
 import { useTeamNames } from './useTeamNames'
+import { useMembers } from './useMembers'
 import type { TeamCandidate } from './TriggerManager'
 import { installBuiltinCommands, type CommandActions } from '../../commands/builtin'
 import { exportSessionMarkdown } from '../../store/exportMarkdown'
@@ -87,6 +88,8 @@ export function ComposerSlot() {
       })),
     [teamRows],
   )
+  // 人员清单：`/per` 弹层的候选（原初成员，副本不算"人"）。
+  const members = useMembers()
   const enterSends = useSettingsStore((s) => s.enterSends)
   const [goalOpen, setGoalOpen] = useState(false)
   const [goalSeed, setGoalSeed] = useState<string | undefined>(undefined)
@@ -223,6 +226,7 @@ export function ComposerSlot() {
             files={files}
             skills={skills}
             teams={teams}
+            members={members}
             draft={draft}
             onDraftChange={setDraft}
             onSend={(t) => void send(t)}

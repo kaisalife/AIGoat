@@ -8,8 +8,10 @@ import {
   applySelection,
   createTriggerMachine,
   itemsFor,
+  triggerAt,
   triggerSpan,
   type FileNode,
+  type MemberCandidate,
   type PopupItem,
   type SkillCandidate,
   type TeamCandidate,
@@ -37,6 +39,8 @@ export interface ComposerProps {
   skills: SkillCandidate[]
   /** 注册表团队清单：`@` 弹层里的「团队」分组（选中插 `@name` 点名）。 */
   teams: TeamCandidate[]
+  /** 注册表人员清单：`/per` 弹层里的「人员」分组（选中插 `@name`，用 TA 的能力）。 */
+  members: MemberCandidate[]
   /** 受控草稿。提到槽里是为了审批接管期间 composer 被换掉时草稿不丢。 */
   draft: string
   onDraftChange: (text: string) => void
@@ -65,6 +69,7 @@ export function Composer(props: ComposerProps) {
     files,
     skills,
     teams,
+    members,
     draft,
     onDraftChange,
     onSend,
@@ -114,6 +119,7 @@ export function Composer(props: ComposerProps) {
     files,
     skills,
     teams,
+    members,
     enterSends,
     onSubmit: submit,
     onTriggerHandled: bump,
@@ -124,6 +130,11 @@ export function Composer(props: ComposerProps) {
     const next = applySelection(text, span, item)
     setText(next.text)
     machine.reset()
+    // 选择器命令（`/skill`、`/file`）插入时故意不带尾随空格：触发段还在，
+    // 这里立刻把候选接上——选中 `/skill` 就该看到技能列表，而不是弹层关掉。
+    if (triggerAt(next.text, next.caret)) {
+      machine.handle('', next.text, next.caret, files, skills, teams, members)
+    }
     // 光标移到插入片段之后，用户可以接着打字。
     requestAnimationFrame(() => {
       const el = area.current
@@ -153,7 +164,7 @@ export function Composer(props: ComposerProps) {
       <div className={cs.box} data-disabled={disabled || undefined}>
         {machine.open && (
           <TriggerPopup
-            items={itemsFor(machine.state, files, skills, teams)}
+            items={itemsFor(machine.state, files, skills, teams, members)}
             cursor={machine.cursor}
             onPick={pick}
             onDismiss={() => {

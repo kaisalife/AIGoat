@@ -93,7 +93,7 @@ export function TeamTab(_props: DockPanelProps) {
               <li>
                 对 codex 说，例如：
                 <br />
-                <code>用 team-builder 技能，加一个 codex 原生成员 reviewer，负责素材评审（先不进团队）</code>
+                <code>用 create-per 技能，加一个 codex 原生成员 reviewer，负责素材评审（先不进团队）</code>
               </li>
               <li>或点右上角「+ 新成员」手工登记；不填团队 = 进人员池。</li>
               <li>组队时说「从人员池挑 reviewer 和 builder 进游戏组」，团队里生成副本，原成员留在池里。</li>

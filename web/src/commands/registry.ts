@@ -26,7 +26,7 @@
 /** 派发类型。见上表。 */
 export type Dispatch = 'popupSelect' | 'action' | 'execute'
 
-export type CommandGroup = '会话' | '上下文' | '配置' | '文件'
+export type CommandGroup = '会话' | '上下文' | '配置' | '文件' | '团队'
 
 export interface CommandSpec {
   /** 不含 `/` 的命令名（`/plan` → `plan`）。 */
@@ -74,7 +74,7 @@ export function clearCommands(): void {
 
 /** 按分组排序（弹层与 `+` 菜单共用这个顺序）。 */
 export function commandsByGroup(): { group: CommandGroup; commands: CommandSpec[] }[] {
-  const groups: CommandGroup[] = ['会话', '上下文', '配置', '文件']
+  const groups: CommandGroup[] = ['会话', '上下文', '配置', '文件', '团队']
   return groups
     .map((group) => ({ group, commands: allCommands().filter((c) => c.group === group) }))
     .filter((g) => g.commands.length > 0)

@@ -115,6 +115,25 @@ const DECLS: Decl[] = [
       if (ctx.selected) a.referenceFile(ctx.selected)
     },
   },
+  {
+    id: 'team',
+    title: '选团队',
+    group: '团队',
+    // 选择器命令：输入框会把候选项直接摆出来（见 TriggerManager 的 pickerQuery），
+    // 选中后插入 `@团队名 `，这条命令本身不需要做任何事。
+    hint: '插入 @团队名，让整个团队按工作流协作',
+    dispatch: 'popupSelect',
+    run: () => {},
+  },
+  {
+    id: 'per',
+    title: '选人',
+    group: '团队',
+    // 同上：`/per` 打开人员列表，选中插入 `@人名 `，表示用这个人的能力。
+    hint: '插入 @人名，用这位成员的能力处理这条消息',
+    dispatch: 'popupSelect',
+    run: () => {},
+  },
 ]
 
 /** 把声明表编译进注册表。启动时调一次。 */

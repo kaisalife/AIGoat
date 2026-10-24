@@ -4,10 +4,12 @@ import {
   itemsFor,
   triggerAt,
   triggerSpan,
+  type MemberCandidate,
   type PopupItem,
   type SkillCandidate,
   type TeamCandidate,
 } from './TriggerManager'
+import { pickerQuery } from './items'
 
 /**
  * 触发符区间定位回归测试。
@@ -98,7 +100,9 @@ describe('技能候选', () => {
   })
 
   it('前缀过滤：查询串收窄技能', () => {
-    const items = itemsFor({ phase: 'trigger', kind: 'command', query: 'team' }, [], skills, [])
+    // 不用 `team`：那是 `/team` 选择器命令的别名，会把列表换成团队
+    // （技能侧改用 `/skill team`）。
+    const items = itemsFor({ phase: 'trigger', kind: 'command', query: 'build' }, [], skills, [])
     expect(items.map((i) => i.id)).toContain('team-builder')
     expect(items.map((i) => i.id)).not.toContain('review')
   })
@@ -145,5 +149,130 @@ describe('团队候选', () => {
       text: '@游戏组 ',
       caret: 5,
     })
+  })
+})
+
+/**
+ * 选择器命令：`/skill`、`/file`。
+ *
+ * 这两个命令不是"执行一个动作"，而是"把候选摆出来"：命令名之后的部分是
+ * 过滤词。修复前它们只把 `/skill ` 插进输入框就关掉弹层，用户看不到任何
+ * 技能——等于要求先背下技能名。
+ */
+describe('选择器命令 /skill 与 /file', () => {
+  const skills: SkillCandidate[] = [
+    { name: 'team-builder', description: '组建团队' },
+    { name: 'review-code', description: '代码评审' },
+  ]
+  const files = [{ path: 'src/app.ts', name: 'app.ts' }]
+
+  it('/skill 直接列出技能，不混本地命令', () => {
+    const items = itemsFor({ phase: 'trigger', kind: 'command', query: 'skill' }, files, skills, [])
+    expect(items.map((i) => i.kind)).toEqual(['skill', 'skill'])
+    expect(items.every((i) => i.group === '技能')).toBe(true)
+  })
+
+  it('/skill team 用命令名之后的词过滤', () => {
+    const items = itemsFor(
+      { phase: 'trigger', kind: 'command', query: 'skill team' },
+      files,
+      skills,
+      [],
+    )
+    expect(items.map((i) => i.id)).toEqual(['team-builder'])
+  })
+
+  it('/file 列出文件候选', () => {
+    const items = itemsFor({ phase: 'trigger', kind: 'command', query: 'file' }, files, skills, [])
+    expect(items.map((i) => i.kind)).toEqual(['file'])
+  })
+
+  it('选中 /skill 时不插尾随空格（触发段保持打开）', () => {
+    const item: PopupItem = { kind: 'command', id: 'skill', label: '/skill', group: '文件' }
+    expect(applySelection('/skill', { start: 0, query: 'skill' }, item)).toEqual({
+      text: '/skill',
+      caret: 6,
+    })
+  })
+
+  it('选中技能时替换整段 /skill 查询', () => {
+    const item: PopupItem = { kind: 'skill', id: 'team-builder', label: '$team-builder', group: '技能' }
+    expect(applySelection('/skill team', { start: 0, query: 'skill team' }, item)).toEqual({
+      text: '$team-builder ',
+      caret: 14,
+    })
+  })
+})
+
+/**
+ * 选择器命令：`/team`（选团队）与 `/per`（选人，用 TA 的能力）。
+ *
+ * 两者都插 `@name `——团队是整队协作，人员是用这个人的能力，记号相同，
+ * 语义由注入的派单说明解释。
+ */
+describe('选择器命令 /team 与 /per', () => {
+  const teams: TeamCandidate[] = [{ name: '游戏组', hint: 'reviewer / builder' }]
+  const members: MemberCandidate[] = [
+    { name: 'reviewer', hint: '素材质量评审' },
+    { name: 'sage', hint: '策划' },
+  ]
+
+  it('/team 只列团队', () => {
+    const items = itemsFor(
+      { phase: 'trigger', kind: 'command', query: 'team' },
+      [],
+      [],
+      teams,
+      members,
+    )
+    expect(items.map((i) => i.kind)).toEqual(['team'])
+    expect(items[0]?.group).toBe('团队')
+  })
+
+  it('/per 只列人员，职责也参与过滤', () => {
+    const all = itemsFor(
+      { phase: 'trigger', kind: 'command', query: 'per' },
+      [],
+      [],
+      teams,
+      members,
+    )
+    expect(all.map((i) => i.kind)).toEqual(['member', 'member'])
+    expect(all.every((i) => i.group === '人员')).toBe(true)
+
+    const filtered = itemsFor(
+      { phase: 'trigger', kind: 'command', query: 'per 评审' },
+      [],
+      [],
+      teams,
+      members,
+    )
+    expect(filtered.map((i) => i.id)).toEqual(['reviewer'])
+  })
+
+  it('选中人员插 @name（点名用 TA 的能力）', () => {
+    const item: PopupItem = { kind: 'member', id: 'sage', label: 'sage', group: '人员' }
+    expect(applySelection('/per sage', { start: 0, query: 'per sage' }, item)).toEqual({
+      text: '@sage ',
+      caret: 6,
+    })
+  })
+
+  it('选中 /team /per 时不插尾随空格（候选接上）', () => {
+    const team: PopupItem = { kind: 'command', id: 'team', label: '/team', group: '文件' }
+    expect(applySelection('/team', { start: 0, query: 'team' }, team)).toEqual({
+      text: '/team',
+      caret: 5,
+    })
+    const per: PopupItem = { kind: 'command', id: 'per', label: '/per', group: '文件' }
+    expect(applySelection('/per', { start: 0, query: 'per' }, per)).toEqual({
+      text: '/per',
+      caret: 4,
+    })
+  })
+
+  it('/per 不会吃掉 /permission', () => {
+    expect(pickerQuery('permission')).toBeNull()
+    expect(pickerQuery('per')).toEqual({ kind: 'per', query: '' })
   })
 })

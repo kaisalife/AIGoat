@@ -167,8 +167,13 @@ fn exec_one(op: &Op) -> Result<String, String> {
             let count = data["created"].as_array().map(Vec::len).unwrap_or(0);
             Ok(format!("已按编制组建团队 {team}：{count} 个副本"))
         }
+        "team-remove" => {
+            let team = op.team.clone().ok_or("team-remove 缺 team")?;
+            crate::registry::remove_team(&team)?;
+            Ok(format!("已解散团队 {team}：副本已删除，原初成员回到人员池"))
+        }
         other => Err(format!(
-            "未知 op：{other}（支持 upsert/remove/workflow/spec/materialize）"
+            "未知 op：{other}（支持 upsert/remove/workflow/spec/materialize/team-remove）"
         )),
     }
 }

@@ -584,7 +584,9 @@ const GENERATED_MARKER: &str = "generated-by-aigoat";
 /// `<root>/src-tauri/target/release/<exe>` → `<root>`；其它布局返回 None。
 mod instructions;
 mod rows;
+mod teams;
 pub mod watch;
 
 pub use instructions::build_instructions;
 pub use rows::rows;
+pub use teams::remove_team;
