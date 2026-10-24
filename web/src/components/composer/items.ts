@@ -15,6 +15,19 @@ export interface FileNode {
   name: string
 }
 
+/** 技能候选的最小形状（resources store 的 SkillInfo 与这里解耦）。 */
+export interface SkillCandidate {
+  name: string
+  description: string
+}
+
+/** 团队候选的最小形状（bridge 的 TeamRow 与这里解耦）。 */
+export interface TeamCandidate {
+  name: string
+  /** 一行提示：成员清单（或「暂无成员」）。 */
+  hint: string
+}
+
 /**
  * 命令候选（按分组）。
  *
@@ -41,6 +54,42 @@ export function commandItems(query: string): PopupItem[] {
     }
   }
   return rankByName(candidates, q).map((c) => c.popup)
+}
+
+/**
+ * 技能候选：codex 已加载的技能（`skills/list`），插进消息就是一次
+ * `$技能名` mention——codex 原生识别这个语法并注入对应 SKILL.md。
+ *
+ * 量级小（几十条），沿用 rankByName 与命令一致的前缀优先体验。
+ */
+export function skillItems(query: string, skills: SkillCandidate[]): PopupItem[] {
+  const q = normalizeCommand(query)
+  const candidates = skills.map((s) => ({
+    popup: {
+      kind: 'skill' as const,
+      id: s.name,
+      label: `$${s.name}`,
+      hint: s.description,
+      group: '技能',
+    },
+    name: s.name,
+    label: s.description,
+  }))
+  return rankByName(candidates, q).map((c) => c.popup)
+}
+
+/**
+ * 团队候选：注册表里的编组，`@` 弹层里跟文件一起出现。
+ *
+ * 选中插 `@团队名 `：对用户是「我点名了这支团队」，对 codex 是个明确的
+ * 协作信号（team-builder 技能的 SKILL.md 解释了这个记号）。量级小，
+ * 用路径子串同款的 includes 匹配即可，不值得上 rankByName。
+ */
+export function teamItems(query: string, teams: TeamCandidate[]): PopupItem[] {
+  const q = query.trim().toLowerCase()
+  return teams
+    .filter((t) => !q || t.name.toLowerCase().includes(q))
+    .map((t) => ({ kind: 'team' as const, id: t.name, label: t.name, hint: t.hint, group: '团队' }))
 }
 
 /**

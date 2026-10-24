@@ -286,6 +286,10 @@ export interface SubAgentRow {
   projectRoot?: string | null
   capabilityManifest?: string | null
   skillDoc?: string | null
+  /** 副本来源的原始成员名；null/缺省 = 原初成员。 */
+  derivedFrom?: string | null
+  /** 原初成员在副本生成之后被改过——副本可能已过期，建议重跑特化。 */
+  derivedStale?: boolean
 }
 
 /**
@@ -296,7 +300,11 @@ export interface TeamRow {
   name: string
   /** 工作流 / SOP（自由文本；空串 = 未写）。 */
   workflow: string
-  /** 归入该团队的成员名（可能为空：先写了流程还没加人）。 */
+  /** 团队规范：全体成员共同遵守的硬约束（空串 = 未写）。 */
+  spec: string
+  /** 团队花名册：挑选进来的原初成员名（副本随特化生成）。 */
+  roster: string[]
+  /** 归入该团队的成员名（含副本）。 */
   members: string[]
 }
 

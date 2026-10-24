@@ -35,6 +35,8 @@ impl SubAgentSpecInput {
             skills: self.skills.unwrap_or_default(),
             mcp_servers: self.mcp_servers.unwrap_or_default(),
             prompt: self.prompt,
+            // 界面手动登记/更新 = 接管该条目，副本标记清掉（只由特化写入）。
+            derived_from: None,
         }
     }
 }
@@ -82,4 +84,23 @@ pub fn bridge_teams_list() -> Result<Value, String> {
 pub fn bridge_teams_set_workflow(team: String, workflow: String) -> Result<Value, String> {
     crate::registry::set_team_workflow(&team, &workflow)?;
     Ok(json!({ "teams": crate::registry::teams() }))
+}
+
+/// 设置某团队的规范（空串清除）。特化副本会把它并进角色提示词。
+#[tauri::command]
+pub fn bridge_teams_set_spec(team: String, spec: String) -> Result<Value, String> {
+    crate::registry::set_team_spec(&team, &spec)?;
+    Ok(json!({ "teams": crate::registry::teams() }))
+}
+
+/// 按团队编制（花名册）生成副本，**原初成员不动**。
+///
+/// `members` 非空 = 本次挑选的原初成员并覆盖花名册；为空 = 沿用已存花名册。
+#[tauri::command]
+pub fn bridge_teams_materialize(
+    team: String,
+    members: Option<Vec<String>>,
+    prune: Option<bool>,
+) -> Result<Value, String> {
+    crate::team::materialize::materialize(&team, members.as_deref(), prune.unwrap_or(false))
 }

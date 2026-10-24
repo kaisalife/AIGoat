@@ -1,0 +1,21 @@
+# {{NAME}} 的内化壳：把上游 agent 包成 AF 子 agent。
+#
+# [workspace] 让本工程独立：放在别人的 Rust 工作区里也不会被当成成员。
+[workspace]
+
+[package]
+name = "{{NAME}}"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "{{NAME}}"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+strip = true
+lto = true

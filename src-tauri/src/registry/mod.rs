@@ -58,6 +58,9 @@ pub struct AgentSpec {
     pub skills: Vec<String>,
     pub mcp_servers: Vec<String>,
     pub prompt: Option<String>,
+    /// 副本来源的原始成员名。只有 `team::materialize` 会写；普通登记传
+    /// `None`（= 该条目就是原初成员，或用户手动接管了副本）。
+    pub derived_from: Option<String>,
 }
 
 /// 团队级元数据。团队**不是成员**，而是成员之上的编组：成员用 `team` 字段
@@ -70,6 +73,18 @@ pub struct TeamMeta {
     /// 团队工作流 / SOP（自由文本，建议写成有序的阶段与交接物）。
     #[serde(default)]
     pub workflow: String,
+    /// 团队规范：全体成员共同遵守的硬约束（命名、风格、交付口径）。
+    ///
+    /// 与 `workflow` 分开：流程讲"先做什么后做什么"，规范讲"所有人都必须
+    /// 怎样"。特化副本会把这段并进角色提示词。
+    #[serde(default)]
+    pub spec: String,
+    /// 团队花名册：从人才池里**挑选**的原初成员名。
+    ///
+    /// 挑人只生成副本（`团队/成员`），原初成员不受影响、可被多个团队同时
+    /// 选中。花名册为空时退化为"已在该团队里的原初成员"（旧用法）。
+    #[serde(default)]
+    pub roster: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone)]
@@ -109,6 +124,9 @@ pub struct AgentEntry {
     /// Codex 专用：角色提示词。
     #[serde(default)]
     pub prompt: Option<String>,
+    /// 副本来源的原始成员名；None = 原初成员。
+    #[serde(default)]
+    pub derived_from: Option<String>,
 }
 
 /// 界面上用的行数据：注册表条目 + 本机实际状态。
@@ -134,6 +152,10 @@ pub struct SubAgentRow {
     pub capability_manifest: Option<String>,
     /// 派单细则 SKILL.md 是否存在。
     pub skill_doc: Option<String>,
+    /// 副本来源的原始成员名；None = 原初成员。
+    pub derived_from: Option<String>,
+    /// 原初成员在副本生成之后被改过——副本可能已过期，建议重跑特化。
+    pub derived_stale: bool,
 }
 
 /// 界面 / 注入用的团队行：团队名 + 工作流 + 成员名清单。
@@ -141,7 +163,12 @@ pub struct SubAgentRow {
 #[serde(rename_all = "camelCase")]
 pub struct TeamRow {
     pub name: String,
+    /// 团队工作流 / SOP。
     pub workflow: String,
+    /// 团队规范：全体成员共同遵守的硬约束。
+    pub spec: String,
+    /// 团队花名册：挑选进来的原初成员名（副本随特化生成）。
+    pub roster: Vec<String>,
     pub members: Vec<String>,
 }
 
@@ -193,19 +220,47 @@ fn now_secs() -> u64 {
         .unwrap_or(0)
 }
 
-/// 登记或更新一个子 agent。external 成员 exe 必须真实存在（登记不存在的
-/// 东西等于埋雷）；codex 原生成员没有 exe，跳过这项校验。
-pub fn upsert(name: &str, spec: &AgentSpec) -> Result<Registry, String> {
+/// 成员名校验。
+///
+/// 允许 `团队/成员` 形式（团队特化副本），因此放开了 `/` 与非 ASCII 字母。
+/// 仍然拒绝：空白、Windows 文件名非法字符、`/` 在首尾、`//`、`..`——
+/// 名字会落成 `<CODEX_HOME>/agents/<slug>.toml`，这些都会破坏路径。
+pub fn check_name(name: &str) -> Result<(), String> {
     let name = name.trim();
     if name.is_empty() {
         return Err("子 agent 名称不能为空".into());
     }
+    if name.starts_with('/') || name.ends_with('/') || name.contains("//") || name.contains("..") {
+        return Err("名称不能以 / 开头或结尾，也不能含 // 或 ..".into());
+    }
+    if name
+        .chars()
+        .any(|c| c.is_whitespace() || r#"\:*?"<>|"#.contains(c))
+    {
+        return Err("名称不能含空白或 : * ? \" < > | \\".into());
+    }
     if !name
         .chars()
-        .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_')
+        .all(|c| c.is_alphanumeric() || c == '-' || c == '_' || c == '/')
     {
-        return Err("名称只能包含字母、数字、- 和 _".into());
+        return Err("名称只能包含字母、数字、-、_ 和 /（团队/成员）".into());
     }
+    Ok(())
+}
+
+/// 落盘用的安全名。
+///
+/// 注册表主键允许 `团队/成员`，但 `/` 在 Windows 文件名里非法——codex 角色
+/// 文件名与角色 TOML 的 `name` 字段一律把 `/` 换成 `__`。
+pub fn slug(name: &str) -> String {
+    name.replace('/', "__")
+}
+
+/// 登记或更新一个子 agent。external 成员 exe 必须真实存在（登记不存在的
+/// 东西等于埋雷）；codex 原生成员没有 exe，跳过这项校验。
+pub fn upsert(name: &str, spec: &AgentSpec) -> Result<Registry, String> {
+    let name = name.trim();
+    check_name(name)?;
 
     let kind = spec.kind;
     let path = if kind == AgentKind::External {
@@ -233,6 +288,7 @@ pub fn upsert(name: &str, spec: &AgentSpec) -> Result<Registry, String> {
         skills: norm_list(&spec.skills),
         mcp_servers: norm_list(&spec.mcp_servers),
         prompt: norm_optional(&spec.prompt),
+        derived_from: norm_optional(&spec.derived_from),
     };
     // 重新登记时保留旧地址，方便排查"昨天还能用今天找不到 exe"。
     if let Some(old) = registry.agents.get(name) {
@@ -254,7 +310,7 @@ pub fn upsert(name: &str, spec: &AgentSpec) -> Result<Registry, String> {
     save(&registry)?;
     // 成员从 codex 原生改成外部进程时，旧角色文件一并清掉。
     if kind != AgentKind::Codex {
-        let role_path = codex_agents_dir()?.join(format!("{}.toml", name));
+        let role_path = codex_agents_dir()?.join(format!("{}.toml", slug(name)));
         if std::fs::read_to_string(&role_path)
             .map(|text| text.contains(GENERATED_MARKER))
             .unwrap_or(false)
@@ -303,7 +359,7 @@ pub fn remove(name: &str) -> Result<Registry, String> {
     save(&registry)?;
     // codex 原生成员注销后，它生成的角色文件一并清掉（只认 AIGoat 标记，
     // 用户手写的角色文件不动）。
-    let role_path = codex_agents_dir()?.join(format!("{}.toml", name.trim()));
+    let role_path = codex_agents_dir()?.join(format!("{}.toml", slug(name.trim())));
     if std::fs::read_to_string(&role_path)
         .map(|text| text.contains(GENERATED_MARKER))
         .unwrap_or(false)
@@ -335,14 +391,34 @@ pub fn teams() -> Vec<TeamRow> {
                 .get(&name)
                 .map(|t| t.workflow.clone())
                 .unwrap_or_default(),
+            spec: registry
+                .teams
+                .get(&name)
+                .map(|t| t.spec.clone())
+                .unwrap_or_default(),
+            roster: registry
+                .teams
+                .get(&name)
+                .map(|t| t.roster.clone())
+                .unwrap_or_default(),
             members: members.get(&name).cloned().unwrap_or_default(),
             name,
         })
         .collect()
 }
 
-/// 设置某团队的工作流 / SOP。空串 = 清除；清除后若该团队也没有成员，整条丢弃。
+/// 设置某团队的工作流 / SOP。空串 = 清除；三项（流程/规范/成员）全空时整条丢弃。
 pub fn set_team_workflow(team: &str, workflow: &str) -> Result<Registry, String> {
+    set_team_text(team, |meta| meta.workflow = workflow.trim().to_string())
+}
+
+/// 设置某团队的规范（全体成员共同遵守的硬约束）。空串 = 清除。
+pub fn set_team_spec(team: &str, spec: &str) -> Result<Registry, String> {
+    set_team_text(team, |meta| meta.spec = spec.trim().to_string())
+}
+
+/// 团队元数据的统一写入口。
+fn set_team_text(team: &str, update: impl FnOnce(&mut TeamMeta)) -> Result<Registry, String> {
     let team = team.trim();
     if team.is_empty() {
         return Err("团队名不能为空".into());
@@ -351,12 +427,13 @@ pub fn set_team_workflow(team: &str, workflow: &str) -> Result<Registry, String>
     if registry.version == 0 {
         registry.version = DB_VERSION;
     }
-    let workflow = workflow.trim();
     let has_members = rows().iter().any(|r| r.team.as_deref() == Some(team));
-    if workflow.is_empty() && !has_members {
-        registry.teams.remove(team);
-    } else {
-        registry.teams.entry(team.to_string()).or_default().workflow = workflow.to_string();
+    let mut meta = registry.teams.remove(team).unwrap_or_default();
+    update(&mut meta);
+    // 只写了规范、只写了流程、或只挑了人，团队都要留着——都是有效内容。
+    if !(meta.workflow.is_empty() && meta.spec.is_empty() && meta.roster.is_empty() && !has_members)
+    {
+        registry.teams.insert(team.to_string(), meta);
     }
     save(&registry)?;
     Ok(registry)
@@ -390,7 +467,7 @@ fn sync_role_files() -> Result<(), String> {
     let generated: Vec<String> = rows()
         .iter()
         .filter(|row| row.kind == AgentKind::Codex)
-        .map(|row| format!("{}.toml", row.name))
+        .map(|row| format!("{}.toml", slug(&row.name)))
         .collect();
     // 只清理带 AIGoat 标记的文件：目录里可能有用户手写的角色。
     for entry in std::fs::read_dir(&dir)
@@ -411,7 +488,7 @@ fn sync_role_files() -> Result<(), String> {
         }
     }
     for row in rows().iter().filter(|row| row.kind == AgentKind::Codex) {
-        let path = dir.join(format!("{}.toml", row.name));
+        let path = dir.join(format!("{}.toml", slug(&row.name)));
         crate::settings::config::write_text(&path, &role_file_toml(&row.name, row))?;
     }
     Ok(())
@@ -420,11 +497,13 @@ fn sync_role_files() -> Result<(), String> {
 /// 角色文件的 TOML 内容。顶层键必须全部在表头之前。
 fn role_file_toml(name: &str, entry: &SubAgentRow) -> String {
     use crate::settings::launch::toml_str;
+    // 角色名 = slug：codex 的 spawn_agent 按这个名字找人，`/` 在这里非法。
+    let codex_name = slug(name);
     let mut out = String::new();
     out.push_str(&format!(
         "# {GENERATED_MARKER}\n# 由 AIGoat 管理：在设置 → 子 Agent 里编辑，手改会被下一次连接覆盖。\n"
     ));
-    out.push_str(&format!("name = {}\n", toml_str(name)));
+    out.push_str(&format!("name = {}\n", toml_str(&codex_name)));
     let desc = if entry.desc.trim().is_empty() {
         format!("{name} 团队成员")
     } else {
@@ -505,6 +584,7 @@ const GENERATED_MARKER: &str = "generated-by-aigoat";
 /// `<root>/src-tauri/target/release/<exe>` → `<root>`；其它布局返回 None。
 mod instructions;
 mod rows;
+pub mod watch;
 
 pub use instructions::build_instructions;
 pub use rows::rows;

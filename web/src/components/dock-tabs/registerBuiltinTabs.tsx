@@ -44,6 +44,7 @@ const ContextTab = panel(() =>
   import('./PermissionsTab').then((m) => ({ default: m.ContextTab })),
 )
 const PlanDocTab = panel(() => import('../plan/PlanDocTab').then((m) => ({ default: m.PlanDocTab })))
+const TeamTab = panel(() => import('../team/TeamTab').then((m) => ({ default: m.TeamTab })))
 const SubagentReadonlyTab = panel(() =>
   import('../subagent/SubagentReadonlyTab').then((m) => ({ default: m.SubagentReadonlyTab })),
 )
@@ -140,6 +141,16 @@ registerTab({
 })
 
 registerTab({
+  id: 'team',
+  title: '团队',
+  glyph: '⚑',
+  source: 'builtin',
+  multi: false,
+  badge: NoBadge,
+  render: TeamTab,
+})
+
+registerTab({
   id: 'attachments',
   title: '附件',
   glyph: '🖼',
@@ -168,6 +179,7 @@ export const BUILTIN_TAB_ORDER: DockTabId[] = [
   'terminal',
   'skills',
   'mcp',
+  'team',
   'permissions',
   'context',
 ]

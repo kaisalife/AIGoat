@@ -34,7 +34,15 @@ fn first_existing(candidates: Vec<PathBuf>) -> Option<String> {
 
 /// 组装界面用的行（含本机状态）。
 pub fn rows() -> Vec<SubAgentRow> {
-    load()
+    let registry = load();
+    // 过期判定要拿原初成员的 `registered_at`：副本比它还旧，说明原初被改过。
+    // 不新增时间字段——`registered_at` 每次 upsert 都会刷新，正好够用。
+    let stamps: std::collections::BTreeMap<&str, u64> = registry
+        .agents
+        .iter()
+        .map(|(name, entry)| (name.as_str(), entry.registered_at))
+        .collect();
+    registry
         .agents
         .iter()
         .map(|(name, entry)| {
@@ -56,6 +64,11 @@ pub fn rows() -> Vec<SubAgentRow> {
             });
             // codex 原生成员没有 exe，本机探测都不适用，恒为"就绪"。
             let exe_exists = entry.kind != AgentKind::Codex || Path::new(&entry.path).is_file();
+            let derived_stale = entry
+                .derived_from
+                .as_deref()
+                .and_then(|base| stamps.get(base))
+                .is_some_and(|stamp| *stamp > entry.registered_at);
             SubAgentRow {
                 name: name.clone(),
                 path: entry.path.clone(),
@@ -71,6 +84,8 @@ pub fn rows() -> Vec<SubAgentRow> {
                 project_root: root.map(|p| p.to_string_lossy().to_string()),
                 capability_manifest: manifest,
                 skill_doc: skill,
+                derived_from: entry.derived_from.clone(),
+                derived_stale,
             }
         })
         .collect()

@@ -13,6 +13,7 @@ mod map;
 mod registry;
 mod server_requests;
 mod settings;
+mod team;
 mod workspaces;
 
 use std::collections::HashSet;
@@ -36,6 +37,13 @@ fn main() {
     // 后续所有落盘（settings / workspaces / ui-state / 注册表 / codex 数据）
     // 都依赖它，必须先于 settings::load 与任何 spawn。
     cache::init();
+    // 默认技能装进 CODEX_HOME（幂等）。随后分流 CLI 子命令：
+    // codex 经 shell 调 team-apply/team-list/agent-scaffold 时直接走完退出，
+    // 不起窗口。
+    team::skill::install_all();
+    if let Some(code) = team::cli::run(std::env::args().skip(1)) {
+        std::process::exit(code);
+    }
     // WebView2 默认走**系统代理**。Tauri 在 Windows 上的应用源是
     // `http://tauri.localhost`，代理工具（Clash/v2rayN/公司代理）的绕过
     // 列表通常只写了 `localhost;127.0.0.1`，盖不住它——于是 WebView 把
@@ -92,6 +100,8 @@ fn main() {
                     }
                 }
             }
+            // 注册表变更 watcher：codex 经 CLI 改注册表后广播给前端「团队」tab。
+            crate::registry::watch::spawn(handle.clone());
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -158,6 +168,8 @@ fn main() {
             commands::bridge_subagents_instructions,
             commands::bridge_teams_list,
             commands::bridge_teams_set_workflow,
+            commands::bridge_teams_set_spec,
+            commands::bridge_teams_materialize,
             commands::bridge_workspaces_list,
             commands::bridge_workspaces_pick,
             commands::bridge_workspaces_activate,

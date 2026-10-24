@@ -13,12 +13,20 @@
  * 收在一个纯函数里，测试它不需要渲染任何东西。
  */
 
-import { commandItems, fileItems, type FileNode } from './items'
+import {
+  commandItems,
+  fileItems,
+  skillItems,
+  teamItems,
+  type FileNode,
+  type SkillCandidate,
+  type TeamCandidate,
+} from './items'
 
-export type { FileNode } from './items'
+export type { FileNode, SkillCandidate, TeamCandidate } from './items'
 
-/** 触发符种类。`@` 与 `/` 的弹层内容不同，但状态机相同。 */
-export type TriggerKind = 'command' | 'file'
+/** 触发符种类。`@` 与 `/` 的弹层内容不同，但状态机相同；技能随 `/`、团队随 `@`。 */
+export type TriggerKind = 'command' | 'file' | 'skill' | 'team'
 
 export type TriggerState =
   | { phase: 'idle' }
@@ -44,7 +52,14 @@ export interface TriggerMachine {
   cursor: number
   items: PopupItem[]
   /** 处理一次按键。返回 true 表示这个键被弹层吃掉了。 */
-  handle: (key: string, text: string, caret: number, files: FileNode[]) => TriggerState | null
+  handle: (
+    key: string,
+    text: string,
+    caret: number,
+    files: FileNode[],
+    skills: SkillCandidate[],
+    teams: TeamCandidate[],
+  ) => TriggerState | null
   reset: () => void
 }
 
@@ -52,13 +67,24 @@ export interface TriggerMachine {
 const SLASH = '/'
 const AT = '@'
 
-/** 取某触发符下的条目。 */
-export function itemsFor(state: TriggerState, files: FileNode[]): PopupItem[] {
+/** 取某触发符下的条目。`/` = 命令 + 技能；`@` = 文件 + 团队。 */
+export function itemsFor(
+  state: TriggerState,
+  files: FileNode[],
+  skills: SkillCandidate[],
+  teams: TeamCandidate[],
+): PopupItem[] {
   if (state.phase === 'trigger') {
-    return state.kind === 'command' ? commandItems(state.query) : fileItems(state.query, files)
+    if (state.kind === 'command') return [...commandItems(state.query), ...skillItems(state.query, skills)]
+    if (state.kind === 'team') return teamItems(state.query, teams)
+    if (state.kind === 'file') return [...fileItems(state.query, files), ...teamItems(state.query, teams)]
+    return skillItems(state.query, skills)
   }
   if (state.phase === 'selected') {
-    return state.kind === 'command' ? commandItems('') : fileItems('', files)
+    if (state.kind === 'command') return [...commandItems(''), ...skillItems('', skills)]
+    if (state.kind === 'team') return teamItems('', teams)
+    if (state.kind === 'file') return [...fileItems('', files), ...teamItems('', teams)]
+    return skillItems('', skills)
   }
   return []
 }
@@ -94,7 +120,7 @@ export function createTriggerMachine(): TriggerMachine {
     },
     reset,
 
-    handle(key, text, caret, files) {
+    handle(key, text, caret, files, skills, teams) {
       // onKeyDown 在字符插入**之前**触发，所以先把这个键的效果算进文本，
       // 再去找触发符——否则查询串永远停在 ''，弹层不会随打字收窄。
       let nextText = text
@@ -123,7 +149,7 @@ export function createTriggerMachine(): TriggerMachine {
 
       // 打开 / 更新 trigger 态：query 会跟着打字实时变化。
       state = { phase: 'trigger', kind: span.kind, query: span.query }
-      items = itemsFor(state, files)
+      items = itemsFor(state, files, skills, teams)
       if (cursor >= items.length) cursor = 0
 
       // ↑↓ 移动、Enter/Tab 选中：这些键要弹层自己消费（不能落进输入框）。
@@ -140,7 +166,7 @@ export function createTriggerMachine(): TriggerMachine {
         if (!item) return state // 没有候选：留在弹层，不提交
         state = { phase: 'selected', kind: item.kind, item }
         cursor = 0
-        items = itemsFor(state, files)
+        items = itemsFor(state, files, skills, teams)
         return state
       }
       // 可打印字符 / 退格：状态已更新，但按键要交给 composer 落文本。
@@ -198,7 +224,18 @@ export function applySelection(
   span: { start: number; query: string } | null,
   item: PopupItem,
 ): { text: string; caret: number } {
-  const replacement = item.kind === 'command' ? `/${item.id} ` : `[${item.label}] `
+  // 技能插成 `$name `：codex 原生把消息里的 `$SkillName` 识别为技能 mention
+  // 并注入 SKILL.md——用命令的 `/` 或文件的 `[]` 都不会触发。
+  // 团队插成 `@name `：对用户是点名编组，记号含义由 team-builder 的
+  // SKILL.md 向 codex 解释（团队没有 codex 原生语法）。
+  const replacement =
+    item.kind === 'command'
+      ? `/${item.id} `
+      : item.kind === 'skill'
+        ? `$${item.id} `
+        : item.kind === 'team'
+          ? `@${item.id} `
+          : `[${item.label}] `
   const start = span?.start ?? text.length
   // 触发段 = 触发符(1 个字符) + 查询串，它的结束位置正好是光标处。
   // **必须保留**这段之后的文本：光标后面还有字时（在句子中间敲 `/` 或 `@`），

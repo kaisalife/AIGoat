@@ -1,4 +1,4 @@
-﻿import clsx from 'clsx'
+import clsx from 'clsx'
 import { useState } from 'react'
 import type { SubAgentKind, SubAgentSpec } from '../../bridge/contract'
 import { Button } from '../primitives'
@@ -19,6 +19,8 @@ export interface SubAgentFormValues {
 export interface SubAgentFormProps {
   /** null = 新建。 */
   initial: SubAgentFormValues | null
+  /** 编辑团队特化副本时传入来源成员名，表单顶部给出"改动会被覆盖"的提示。 */
+  derivedFrom?: string | null
   onSave: (spec: SubAgentSpec) => Promise<void>
   onCancel: () => void
 }
@@ -44,7 +46,7 @@ function parseList(text: string): string[] {
  * 配的是模型/技能/MCP/角色提示词——这些经 `-c agents.*` 随下一次连接
  * 写进 codex 配置，表单里如实标注生效时机。
  */
-export function SubAgentForm({ initial, onSave, onCancel }: SubAgentFormProps) {
+export function SubAgentForm({ initial, derivedFrom, onSave, onCancel }: SubAgentFormProps) {
   const [name, setName] = useState(initial?.name ?? '')
   const [kind, setKind] = useState<SubAgentKind>(initial?.kind ?? 'external')
   const [path, setPath] = useState(initial?.path ?? '')
@@ -85,6 +87,11 @@ export function SubAgentForm({ initial, onSave, onCancel }: SubAgentFormProps) {
   return (
     <div className={f.form}>
       {error && <p className="settings__error">{error}</p>}
+      {derivedFrom && (
+        <p className={f.hint}>
+          这是「{derivedFrom}」的团队特化副本：手改只影响这个副本，下次重跑特化会被覆盖。
+        </p>
+      )}
       <div className={f.grid}>
         <label className={f.field}>
           <span className={f.label}>名称 *</span>

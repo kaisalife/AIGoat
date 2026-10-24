@@ -1,0 +1,17 @@
+{
+  "name": "{{NAME}}",
+  "kind": "external",
+  "description": "{{DESC}}",
+  "protocol": {
+    "invoke": "<exe> --agent <task.json> --out <report.json>",
+    "exitCodes": { "0": "成功", "1": "失败" }
+  },
+  "capabilities": [
+    {
+      "type": "task",
+      "description": "把这里改成真实能力类型与说明（派单前 codex 会读这份清单）",
+      "params": {}
+    }
+  ],
+  "limits": ["单次调用超时 600 秒", "无会话状态，每次派单独立"]
+}

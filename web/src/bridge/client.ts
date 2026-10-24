@@ -130,6 +130,14 @@ export interface BridgeClient extends GoalApi, AttachmentApi, ThreadListApi, Rev
   listTeams(): Promise<import('./contract').TeamRow[]>
   /** 设置某团队的工作流 / SOP（空串清除）。 */
   setTeamWorkflow(team: string, workflow: string): Promise<import('./contract').TeamRow[]>
+  /** 设置某团队的规范（空串清除）。 */
+  setTeamSpec(team: string, spec: string): Promise<import('./contract').TeamRow[]>
+  /** 按团队编制（花名册）生成副本，原初成员不动。 */
+  materializeTeam(
+    team: string,
+    prune?: boolean,
+    members?: string[] | null,
+  ): Promise<{ team: string; roster: string[]; created: string[]; pruned: string[] }>
 
   // ------------------------------------------------------------ 工作区
   listWorkspaces(): Promise<import('./contract').WorkspacesPayload>

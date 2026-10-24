@@ -58,8 +58,10 @@ fn push_team_overview(out: &mut String, list: &[SubAgentRow]) {
         let key = row.team.as_deref().unwrap_or("未编队");
         grouped.entry(key).or_default().push(&row.name);
     }
-    // 只有一个人在编队、且没写工作流时，总览没有信息量。
-    let any_workflow = teams.iter().any(|t| !t.workflow.trim().is_empty());
+    // 只有一个人在编队、且流程与规范都空时，总览没有信息量。
+    let any_workflow = teams
+        .iter()
+        .any(|t| !t.workflow.trim().is_empty() || !t.spec.trim().is_empty());
     if grouped.len() == 1 && grouped.values().all(|m| m.len() == 1) && !any_workflow {
         return;
     }
@@ -67,6 +69,14 @@ fn push_team_overview(out: &mut String, list: &[SubAgentRow]) {
     for (team, members) in &grouped {
         out.push_str(&format!("- **{team}**：{}\n", members.join("、")));
         if let Some(row) = teams.iter().find(|t| t.name == *team) {
+            // 规范在前、流程在后：规范是全体硬约束，主 agent 派单时要先知道。
+            let spec = row.spec.trim();
+            if !spec.is_empty() {
+                out.push_str("  - 团队规范（全体成员必须遵守）：\n");
+                for line in spec.lines() {
+                    out.push_str(&format!("    {line}\n"));
+                }
+            }
             let workflow = row.workflow.trim();
             if !workflow.is_empty() {
                 out.push_str("  - 工作流：\n");
@@ -125,6 +135,14 @@ fn push_native_section(out: &mut String, native: &[&SubAgentRow]) {
         }
         if let Some(prompt) = row.prompt.as_deref().filter(|p| !p.trim().is_empty()) {
             out.push_str(&format!("- 角色提示词要点：{prompt}\n"));
+        }
+        // 团队特化副本的注册表名含 `/`（`团队/成员`），角色文件名做了转义——
+        // 派活时要给 codex 的是 slug，不是显示名。
+        if super::slug(&row.name) != row.name {
+            out.push_str(&format!(
+                "- codex 调用名：`{}`（显示名里的 / 在角色文件里转义为 __）\n",
+                super::slug(&row.name)
+            ));
         }
         out.push_str(
             "- 派活：用协作工具 `spawn_agent`（name 与成员名一致），结果经 \

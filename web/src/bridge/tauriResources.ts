@@ -82,6 +82,16 @@ export function resourcesApi() {
       })
       return resp.teams
     },
+    async setTeamSpec(team: string, spec: string) {
+      const resp = await call<{ teams: TeamRow[] }>('bridge_teams_set_spec', { team, spec })
+      return resp.teams
+    },
+    materializeTeam(team: string, prune = false, members: string[] | null = null) {
+      return call<{ team: string; roster: string[]; created: string[]; pruned: string[] }>(
+        'bridge_teams_materialize',
+        { team, prune, members },
+      )
+    },
 
     // -------------------------------------------------------- 工作区
     listWorkspaces() {

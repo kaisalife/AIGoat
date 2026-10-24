@@ -15,6 +15,9 @@ export interface SubAgentsState {
   register: (spec: SubAgentSpec) => Promise<void>
   update: (spec: SubAgentSpec) => Promise<void>
   setWorkflow: (team: string, workflow: string) => Promise<void>
+  setSpec: (team: string, spec: string) => Promise<void>
+  /** 按编制生成副本（原初成员不动）。`members` 非空 = 本次挑选并覆盖花名册。 */
+  materialize: (team: string, prune?: boolean, members?: string[] | null) => Promise<number>
 }
 
 /**
@@ -95,5 +98,43 @@ export function useSubAgents(): SubAgentsState {
     [reload],
   )
 
-  return { rows, teams, instructions, errors, reload, remove, register, update, setWorkflow }
+  const setSpec = useCallback(
+    async (team: string, spec: string) => {
+      try {
+        await getClient().setTeamSpec(team, spec)
+        await reload()
+      } catch (err) {
+        setErrors([describe(err)])
+      }
+    },
+    [reload],
+  )
+
+  const materialize = useCallback(
+    async (team: string, prune = false, members: string[] | null = null) => {
+      try {
+        const result = await getClient().materializeTeam(team, prune, members)
+        await reload()
+        return result.created.length
+      } catch (err) {
+        setErrors([describe(err)])
+        return 0
+      }
+    },
+    [reload],
+  )
+
+  return {
+    rows,
+    teams,
+    instructions,
+    errors,
+    reload,
+    remove,
+    register,
+    update,
+    setWorkflow,
+    setSpec,
+    materialize,
+  }
 }

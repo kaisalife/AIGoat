@@ -10,11 +10,14 @@ import { useLayoutStore } from '../layout/useLayoutStore'
 import { PlanChip, planPhaseOf } from '../plan/PlanChip'
 import { DropOverlay } from '../attachment/DropOverlay'
 import { PlusMenu } from './PlusMenu'
+import { useTeamNames } from './useTeamNames'
+import type { TeamCandidate } from './TriggerManager'
 import { installBuiltinCommands, type CommandActions } from '../../commands/builtin'
 import { exportSessionMarkdown } from '../../store/exportMarkdown'
 import { useEditor } from '../../store/editor'
 import { useSettingsStore } from '../settings/useSettingsStore'
 import { useShell, type ShellState } from '../../store/shell'
+import { useResources } from '../../store/resources'
 import { useComposerBridge } from '../../store/composerBridge'
 import { shallow } from 'zustand/shallow'
 
@@ -70,6 +73,20 @@ export function ComposerSlot() {
   // 不会因为"每帧扫一遍 entries"而重渲染。
   const compactionNotice = useShell(latestCompactionNotice)
   const tree = useEditor((s) => s.tree)
+  // 技能清单：`/` 弹层里跟在本地命令后面的「技能」分组（skillsChanged 事件
+  // 自动刷新，技能装/卸后弹层内容自动跟上）。
+  const skills = useResources((s) => s.skills)
+  // 团队清单：`@` 弹层的「团队」分组（registry-changed 自动刷新，codex 改
+  // 注册表后弹层候选自动跟上）。
+  const teamRows = useTeamNames()
+  const teams = useMemo<TeamCandidate[]>(
+    () =>
+      teamRows.map((t) => ({
+        name: t.name,
+        hint: t.members.length > 0 ? t.members.join(' / ') : '暂无成员',
+      })),
+    [teamRows],
+  )
   const enterSends = useSettingsStore((s) => s.enterSends)
   const [goalOpen, setGoalOpen] = useState(false)
   const [goalSeed, setGoalSeed] = useState<string | undefined>(undefined)
@@ -204,6 +221,8 @@ export function ComposerSlot() {
             tokens={tokens}
             enterSends={enterSends}
             files={files}
+            skills={skills}
+            teams={teams}
             draft={draft}
             onDraftChange={setDraft}
             onSend={(t) => void send(t)}

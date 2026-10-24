@@ -1,0 +1,9 @@
+{
+  "command": "python",
+  "args": ["vendor/main.py", "--prompt", "{prompt}"],
+  "input": "arg",
+  "output": "stdout-text",
+  "timeoutSec": 600,
+  "cwd": "{workspace}",
+  "env": {}
+}

@@ -11,6 +11,8 @@ import {
   triggerSpan,
   type FileNode,
   type PopupItem,
+  type SkillCandidate,
+  type TeamCandidate,
 } from './TriggerManager'
 import { dispatchCommandLine } from './useComposerSubmit'
 import { ComposerActions } from './ComposerActions'
@@ -31,6 +33,10 @@ export interface ComposerProps {
   steer: boolean
   /** `@file` 的候选来源（工作区文件列表）。 */
   files: FileNode[]
+  /** codex 技能清单：`/` 弹层里的「技能」分组（选中插 `$name` mention）。 */
+  skills: SkillCandidate[]
+  /** 注册表团队清单：`@` 弹层里的「团队」分组（选中插 `@name` 点名）。 */
+  teams: TeamCandidate[]
   /** 受控草稿。提到槽里是为了审批接管期间 composer 被换掉时草稿不丢。 */
   draft: string
   onDraftChange: (text: string) => void
@@ -57,6 +63,8 @@ export function Composer(props: ComposerProps) {
     enterSends,
     steer,
     files,
+    skills,
+    teams,
     draft,
     onDraftChange,
     onSend,
@@ -104,6 +112,8 @@ export function Composer(props: ComposerProps) {
     handle: machine.handle,
     text,
     files,
+    skills,
+    teams,
     enterSends,
     onSubmit: submit,
     onTriggerHandled: bump,
@@ -143,7 +153,7 @@ export function Composer(props: ComposerProps) {
       <div className={cs.box} data-disabled={disabled || undefined}>
         {machine.open && (
           <TriggerPopup
-            items={itemsFor(machine.state, files)}
+            items={itemsFor(machine.state, files, skills, teams)}
             cursor={machine.cursor}
             onPick={pick}
             onDismiss={() => {
@@ -164,7 +174,7 @@ export function Composer(props: ComposerProps) {
                 ? 'Agent 正在处理…'
                 : blocked
                   ? '等待审批…'
-                  : '输入消息。/ 调命令，@ 引用文件'
+                  : '输入消息。/ 命令与技能，@ 文件与团队'
           }
           value={text}
           disabled={disabled}

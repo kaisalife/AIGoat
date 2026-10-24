@@ -27,6 +27,7 @@ export type DockTabId =
   | 'mcp'
   | 'review'
   | 'subagent'
+  | 'team'
   | 'plan'
   | 'permissions'
   | 'context'
